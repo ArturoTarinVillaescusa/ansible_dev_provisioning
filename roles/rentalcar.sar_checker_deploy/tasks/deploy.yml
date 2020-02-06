@@ -1,0 +1,19 @@
+---
+
+- name: Generating {{ sar_checker_ini }} file
+  win_template:
+    src: "templates/{{ sar_checker_ini }}.j2"
+    dest: "{{ sar_checker_folder }}\\{{ sar_checker_ini }}"
+
+- name: Transfer required files
+  win_copy: src=files/app/{{ item }} dest={{ sar_checker_folder }}\\
+  with_items:
+    - CheckerDaemons.zip
+    - libeay32.dll
+    - ssleay32.dll
+
+- name: Unzip Artifact CheckerDaemons.zip
+  win_unzip:
+    src: '{{ sar_checker_folder }}\CheckerDaemons.zip'
+    dest: '{{ sar_checker_folder }}'
+    delete_archive: yes

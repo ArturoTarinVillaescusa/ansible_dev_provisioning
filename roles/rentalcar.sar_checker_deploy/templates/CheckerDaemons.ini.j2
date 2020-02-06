@@ -1,0 +1,70 @@
+[LISTACHEQUEOS] 
+listachequeos = SARSISD,CDVSID,TARSID
+
+[SARSISD]
+IPServidor = localhost
+MensajeChequeo = <?xml version="1.0"?> <TestCommunicationRQ xmlns="http://sarsis.rentalcar.es/SARSISD/Esquemas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://sarsis.rentalcar.es/SARSISD/Esquemas  http://sarsis.rentalcar.es/SARSISD/Esquemas/RENTALCAR_TestCommunication.xsd"/>
+NombreChequeo = SARSISD
+NombreEjecutable = SARSISDWebServer.exe
+NombreServidor = localhost
+NombreSemaforo = SARD9002
+NombreSemaforoInicio = SARI9002
+NumReintentosEnvioMensaje = 24
+PuertoServidor = 9002
+RespuestaEsperada = >oK<
+RutaEjecutable = C:\SARSISD\SIS.bat
+TiempoEntreChequeo = 5000
+TipoMensaje = POST
+TiempoCarga = 540000
+ComprobarSemaforo = 1
+
+[CDVSID]
+Nombresemaforo = CDVD9003
+NombresemaforoInicio = CDVI9003
+IPServidor = localhost
+MensajeChequeo = CDV TESTCHECKDISP|1|02553|05|7|(HOY+2)|(HOY+9)|0845|0845|1|{{ sar_checker_zone_ref[ansible_hostname] }}|14|AA|BB|CC|D|E|F|FF|G|I|J|K|L|R|S|{{ sar_checker_zone_ref[ansible_hostname] }}
+NombreChequeo = CDVSID
+NombreServidor = localhost
+NombreEjecutable = CDVSID.exe
+NumReintentosEnvioMensaje = 24
+PuertoServidor = 9003
+RespuestaEsperada = 1|
+RutaEjecutable = C:\Daemons\CDVSID\CDV.bat
+TiempoEntreChequeo = 5050
+TipoMensaje = SOCKET
+ComprobarSemaforo = 1
+TiempoCarga = 240000
+
+[TARSID]
+Nombresemaforo = TARD9004
+NombreSemaforoInicio = TARI9004
+IPServidor = localhost
+MensajeChequeo = TAR TESTCALCALQ|1|03625|02|(HOY)|(HOY+7)|0900|0900|(HOY)|1|0|0|1|ALC|1|AA|1|ALC|0|0|2|0|0|
+NombreChequeo = TARSID
+NombreEjecutable = TARSID.exe
+NombreServidor = localhost
+NumReintentosEnvioMensaje = 24
+PuertoServidor = 9004
+RespuestaEsperada = 1|
+RutaEjecutable = C:\Daemons\TARSID\TAR.bat
+TiempoEntreChequeo = 5100
+TipoMensaje = SOCKET
+ComprobarSemaforo = 1
+TiempoCarga = 240000
+
+[PRI]
+Nombresemaforo = PRID9004
+NombreSemaforoInicio = PRII9004
+IPServidor = localhost
+MensajeChequeo = TAR TESTCALCALQ|1|03625|02|(HOY)|(HOY+7)|0900|0900|(HOY)|1|0|0|1|ALC|1|AA|1|ALC|0|0|2|0|0|
+NombreChequeo = TARSID
+NombreEjecutable = TARSID.exe
+NombreServidor = localhost
+NumReintentosEnvioMensaje = 24
+PuertoServidor = 9004
+RespuestaEsperada = 1|
+RutaEjecutable = C:\Daemons\TARSID\PRI.bat
+TiempoEntreChequeo = 5150
+TipoMensaje = SOCKET
+ComprobarSemaforo = 1
+TiempoCarga = 240000

@@ -1,0 +1,65 @@
+---
+- name: Check if service {{ mss_app_artifact }} in {{ ansible_hostname }}  is already installed
+  win_service:
+     name: "{{ mss_app_artifact }}"
+  register: service_info
+
+- name: Stop service
+  win_service:
+    name: "{{ mss_app_artifact }}"
+    state: stopped
+    username: "{{ mss_app_user }}"
+    password: "{{ mss_app_user }}"
+  when: service_info['exists'] == true
+
+- name: Add JASYPT ENV VAR
+  win_environment:
+     state: present
+     name: JASYPT_MASTER_PASS
+     value: "{{ jasypt_master_password }}"
+     level: machine
+
+- name: Unzip artifact
+  win_unzip:
+     src: "{{ windows_mss_folder }}\\{{ mss_name }}\\{{ mss_artifact_name }}.zip"
+     dest: "{{ windows_mss_folder }}\\{{ mss_name }}"
+
+- name: Genarate properties file
+  win_template:
+     src: "templates/{{ mss_name }}/{{ mss_name }}.application.properties.j2"
+     dest: "{{ windows_mss_folder }}\\{{ mss_name }}\\application.properties"
+
+- name: Generate launcher
+  win_template:
+     src: "templates/run.bat.j2"
+     dest: "{{ windows_mss_folder }}\\{{ mss_name }}\\run.bat"
+
+- name: Generate start launcher
+  win_template:
+     src: "templates/start.bat.j2"
+     dest: "{{ windows_mss_folder }}\\{{ mss_name }}\\scripts\\start.bat"
+
+- name: Generate stop launcher
+  win_template:
+     src: "templates/stop.bat.j2"
+     dest: "{{ windows_mss_folder }}\\{{ mss_name }}\\scripts\\stop.bat"
+     
+- name: Remove artifact compressed file
+  win_file:
+     path: "{{ windows_mss_folder }}\\{{ mss_name }}\\{{ mss_artifact_name }}.zip"
+     state: absent
+
+- name: Create service {{ mss_app_artifact }} if doesnt exist
+  win_nssm:
+     executable: "{{  windows_mss_req_folder }}\\nssm\\nssm.exe"
+     name: "{{ mss_app_artifact }}"
+     application: "{{ mss_installation_global_folder }}\\{{ mss_name }}\\run.bat"
+     state: present
+
+- name: Start service {{ mss_app_artifact }}
+  win_service:
+    name: "{{ mss_app_artifact }}"
+    state: started
+    username: "{{ windows_domain }}\\{{mss_app_user }}"
+    password: "{{ mss_app_userpass }}"
+     

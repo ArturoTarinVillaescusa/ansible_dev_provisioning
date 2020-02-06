@@ -1,0 +1,74 @@
+#####  INFRASTRUCTURE  #####
+
+[kafka]
+kafka_1 ansible_host=192.168.0.116
+kafka_2 ansible_host=192.168.0.117
+kafka_3 ansible_host=192.168.0.118
+
+[zookeeper:children]
+kafka
+
+[kafka_broker:children]
+kafka
+
+[schema_registry]
+kafka_2 ansible_host=192.168.0.117 
+
+[control_center]
+kafka_1 ansible_host=192.168.0.116
+
+[kafka_connect]
+kafka_2 ansible_host=192.168.0.117
+
+[kafka_rest]
+kafka_3 ansible_host=192.168.0.118
+
+[ksql]
+kafka_1 ansible_host=192.168.0.116
+
+
+[REDIS]
+redis-lab
+
+#####  APPLICATIONS  #####
+
+[SIS]         
+10.0.12.240   
+
+[SAR:children]
+SIS
+
+[mssconnectedcars]
+mssconnectedcars ansible_host=10.0.12.240
+
+[mssdocumentmanager]
+mssdocumentmanager ansible_host=10.0.12.240
+
+### NovaBase ###
+
+[mssown:children]
+mssown_mss
+
+[mssown_mss]
+mssown_mss_1	ansible_host=PREMSSSRV05.labcen.local
+
+### Keyngo ###
+
+## keyngo
+# root level, all the components of the app
+[keyngo:children]
+keyngo_kioskj
+keyngo_kioskd
+
+[keyngo_kioskj]
+keyngo_kioskj_1 ansible_host=KIOSKSERVER.labcen.local
+keyngo_kioskj_2 ansible_host=KIOSKSERVER.labcen.local
+keyngo_kioskj_3 ansible_host=KIOSKSERVER.labcen.local
+
+[keyngo_kioskd]
+keyngo_kioskd_1 ansible_host=PREMSSSRV05.labcen.local   
+keyngo_kioskd_2 ansible_host=PREMSSSRV05.labcen.local   
+keyngo_kioskd_3 ansible_host=PREMSSSRV05.labcen.local   
+
+
+

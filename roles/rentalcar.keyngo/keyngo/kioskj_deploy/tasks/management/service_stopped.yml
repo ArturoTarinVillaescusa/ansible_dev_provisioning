@@ -1,0 +1,12 @@
+- name        : Check if {{ keyngo_kioskj_svc_name }} service exists in {{ ansible_hostname }}
+  win_service :
+     name         : '{{ keyngo_kioskj_svc_name }}'
+  register: service_info
+
+- name         : Ensure service {{ keyngo_kioskj_svc_name }} service is stopped in {{ ansible_hostname }}
+  win_service  :
+     name         : '{{ keyngo_kioskj_svc_name }}'
+     state        : stopped
+     username     : '{{ keyngo_kioskj_svc_user }}'
+     password     : '{{ keyngo_kioskj_svc_password }}'  
+  when         : service_info['exists'] == true

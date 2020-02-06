@@ -1,0 +1,24 @@
+## setup system
+## All task required to leave the system in the expected status before deploy the application.
+
+- name  : '### SETUP SYSTEM ###'
+  block :
+  - name            : '>>>> SETUP SYSTEM'
+    debug           :
+       msg            : 'Ensuring {{ ansible_hostname }} is ready for host {{ inventory_hostname }}'
+
+  - name            : 'Ensure jasypt environment variable is set propperly'
+    win_environment :
+       name           : '{{ jasypt_master_env }}'
+       value          : '{{ jasypt_master_password }}'
+       level          : machine
+       state          : present
+
+  - name            : 'Ensure required folders are present'
+    win_file        :
+       path           : '{{ item }}'
+       state          : directory
+    with_items      : '{{ mssown_mss_required_paths }}'
+
+
+

@@ -1,0 +1,6 @@
+- hosts: mssown
+  gather_facts: yes
+  roles:
+     - role: rentalcar.novabase/mssown/mss_deploy
+       vars:
+          mssown_mss_op: '{{ mssown_mss_op }}'

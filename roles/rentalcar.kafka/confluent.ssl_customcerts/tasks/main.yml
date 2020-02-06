@@ -1,0 +1,71 @@
+# - name: create ssl certificate directory
+#   file:
+#     path: {{ kerberos.jks_store_folder }}
+#     state: directory
+#     mode: 0755
+# - name: copy ca certs to host
+#   copy:
+#     src: "{{ssl_ca_certificate_path}}"
+#     dest: {{ kerberos.jks_store_folder }}
+#     mode: 0755
+# - name: copy host certs to host
+#   copy:
+#     src: "{{ssl_host_key_path}}"
+#     dest: {{ kerberos.jks_store_folder }}
+#     mode: 0755
+# - name: copy private key to host
+#   copy:
+#     src: "{{ssl_private_key_path}}"
+#     dest: {{ kerberos.jks_store_folder }}
+#     mode: 0755
+# - name: copy ssl script to host
+#   copy:
+#     src: scripts/certs-import.sh
+#     dest: {{ kerberos.jks_store_folder }}
+#     mode: 0755
+# - name: Import SSL Certs
+#   shell: {{ kerberos.jks_store_folder }}/certs-import.sh "{{ssl_ca_certificate}}" "{{ssl_host_key}}" "{{ssl_private_key}}" "{{host_keystore_storepass}}" "{{host_truststore_storepass}}" "{{ca_cert_password}}" "{{host_cert_password}}" "{{privatekey_keystore_password}}"
+#   args:
+#     chdir: {{ kerberos.jks_store_folder }}
+#     creates: {{ kerberos.jks_store_folder }}/broker.keystore.jks
+# - name: copy ssl related files to local ansible host (from {{ kerberos.jks_store_folder }}/ to generated_ssl_files)
+#   synchronize:
+#     src: {{ kerberos.jks_store_folder }}/
+#     dest: generated_ssl_files
+#     mode: pull
+#   ignore_errors: yes
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.keytab_source_dir }}/zookeeper.service.keytab to {{ kerberos.keytab_source_dir }}/zookeeper.service.keytab
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.keytab_source_dir }}/zookeeper.service.keytab"
+    dest: "{{ kerberos.keytab_source_dir }}/zookeeper.service.keytab"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.keytab_source_dir }}/kafka.service.keytab to {{ kerberos.keytab_source_dir }}/kafka.service.keytab
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.keytab_source_dir }}/kafka.service.keytab"
+    dest: "{{ kerberos.keytab_source_dir }}/kafka.service.keytab"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.truststore.jks to {{ kerberos.jks_store_folder }}/kafka.server.truststore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.truststore.jks"
+    dest: "{{ kerberos.jks_store_folder }}/kafka.server.truststore.jks"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.keystore.jks to {{ kerberos.jks_store_folder }}/kafka.server.keystore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.keystore.jks"
+    dest: "{{ kerberos.jks_store_folder }}/kafka.server.keystore.jks"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.truststore.jks to {{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.truststore.jks"
+    dest: "{{ kerberos.jks_store_folder }}/kafka.client.truststore.jks"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.keystore.jks to {{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.keystore.jks"
+    dest: "{{ kerberos.jks_store_folder }}/kafka.client.keystore.jks"
+    mode: 0744

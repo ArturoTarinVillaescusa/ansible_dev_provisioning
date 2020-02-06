@@ -1,0 +1,28 @@
+## Distribute
+## Ensure the target version artifacts are present.
+
+- name  : '### DISTRIBUTE ### '
+  block :
+  - name        : '>>>> DISTRIBUTE DELIVERY'
+    debug       :
+       msg        : 'Ensuring required delivery is present for {{ inventory_hostname }} in {{ ansible_hostname }}'
+  - name        : 'Distribute version if required'
+    block       :
+    - name        : 'Ensure APP Artifact is present'
+      win_stat    :
+         path     : '{{ keyngo_kioskj_artifact_path }}\{{ keyngo_kioskj_artifact_name }}'
+      register    : keyngo_kioskj_artifact
+    
+    - name        : 'Download App artifact if required'
+      block       :
+      - name        : 'Ensure New version path is present'
+        win_file    :
+           path             : '{{ keyngo_kioskj_artifact_path }}'
+           state            : directory
+      - name        : 'Download Artifact'
+        win_get_url :
+           url              : '{{ keyngo_kioskj_artifact_url }}'
+           dest             : '{{ keyngo_kioskj_artifact_path }}\{{ keyngo_kioskj_artifact_name }}'
+      when        : keyngo_kioskj_artifact['stat']['exists'] == false
+    when       : keyngo_kioskj_version is defined
+

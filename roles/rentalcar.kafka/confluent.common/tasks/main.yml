@@ -1,0 +1,31 @@
+# JVM Installation and Repo Setup
+- import_tasks: redhat.yml
+  when: ansible_os_family == "RedHat"
+- import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Disable Require TTY in Sudoers (required for ansible synchronize)
+  lineinfile:
+    path: /etc/sudoers
+    state: absent
+    regexp: '^Defaults\s+requiretty.*$'
+
+- name: Create Jolokia directory
+  file:
+    path: /opt/jolokia
+    state: directory
+    mode: 0755
+
+- name: Download Jolokia Jar
+  get_url:
+    url: "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/{{jolokia_version}}/jolokia-jvm-{{jolokia_version}}-agent.jar"
+    dest: "{{ jolokia_jar_path }}"
+
+# - name: Set some kernel parameters
+#   lineinfile:
+#     dest: /etc/hosts
+#     line: "{{ item.line }}"
+#   with_items:
+#     - { line: '192.168.0.116   broker1 broker1.rentalcar.es' }
+#     - { line: '192.168.0.117   broker2 broker2.rentalcar.es' }
+#     - { line: '192.168.0.118   broker3 broker3.rentalcar.es' }

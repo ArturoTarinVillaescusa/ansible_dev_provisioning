@@ -1,0 +1,15 @@
+# Stop application before deploy
+#
+
+- name  : '>>> Check if app process is running'
+  block :
+  - name        : '>>>> CHECKING IF APP IS RUNNING'
+    debug       :
+       msg        : '{{ inventory_hostname }}'
+
+  - name        : 'Check if kiosk app is running'
+    script      : files/scripts/check-kioskm.ps1
+     
+
+      
+

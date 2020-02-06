@@ -1,0 +1,10 @@
+- name         : Install service if required
+  import_tasks : management/service_installed.yml
+- name         : Ensure service {{ mssown_mss_svc_name }} service is started in {{ ansible_hostname }}
+  win_service  :
+     name         : '{{ mssown_mss_svc_name }}'
+     state        : started
+     display_name : '{{ mssown_mss_svc_name }}-{{ mssown_mss_version }}'
+     start_mode   : auto           
+     username     : '{{ mssown_mss_svc_user }}'
+     password     : '{{ mssown_mss_svc_password }}'        

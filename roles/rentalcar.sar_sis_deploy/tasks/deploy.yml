@@ -1,0 +1,63 @@
+---
+
+- name: Unzip artifact
+  win_command:  "\"C:\\Program Files\\7-Zip\\7z.exe\" x {{ sar_sis_installation_folder }}\\{{ sar_sis_artifact_name }}-{{ sar_sis_version }}.7z -o{{ sar_sis_installation_folder }} -aoa"
+  args:
+    chdir: "{{ sar_sis_installation_folder }}"
+
+- name: Generating {{ sar_sis_properties_file }} file
+  win_template:
+    src: "templates/{{ sar_sis_properties_file }}.j2"
+    dest: "{{ sar_sis_installation_folder }}\\{{ sar_sis_properties_file }}"
+
+- name: Generating {{ sar_sis_db_ini }} file
+  win_template:
+    src: "templates/{{ sar_sis_db_ini }}.j2"
+    dest: "{{ sar_sis_installation_folder }}\\{{ sar_sis_db_ini }}"
+
+- name: Generating {{ sar_sis_data_ini }} file
+  win_template:
+    src: files/app/ini/{{ sar_sis_data_ini }}
+    dest: "{{ sar_sis_installation_folder }}\\{{ sar_sis_data_ini }}"
+
+- name: Generating {{ sar_sis_launch_file }} file
+  win_template:
+    src: "templates/{{ sar_sis_launch_file }}.j2"
+    dest: "{{ sar_sis_installation_folder }}\\{{ sar_sis_launch_file }}"
+
+- name: Ensure certificates folder exist
+  win_file:
+    path: "{{ sar_sis_certs_folder }}"
+    state: directory 
+
+- name: Transfer certificates
+  win_copy: src=files/app/certs/{{ item }} dest={{ sar_sis_certs_folder }}\\
+  with_items:
+    - CA_cert.pem
+    - CA_cert.srl  
+    - CA_PrivateKey.pem
+    - Cert_peticion.pem
+    - Cert_PrivateKey.pem
+    - rentalcar-sarsis.cert
+    - web.config
+
+- name: Removing artifact file - {{ sar_sis_artifact_name }}-{{ sar_sis_version }}.7z
+  win_file:
+    path: "{{ sar_sis_installation_folder }}\\{{ sar_sis_artifact_name }}-{{ sar_sis_version }}.7z"
+    state: absent
+
+- name: Allow rights to {{ sar_sis_service_user }}
+  win_acl:
+     path: '{{ sar_sis_installation_folder }}'
+     user: '{{ windows_domain }}\{{ sar_sis_service_user }}' 
+     rights: FullControl
+     type: allow
+     state: present
+     propagation: 'None'
+
+- name: Create an application shortcut on the desktop
+  win_shortcut:
+    src: "{{ sar_sis_installation_folder }}\\{{ sar_sis_launch_file }}"
+    dest: "C:\\Users\\{{ sar_sis_service_user }}\\Desktop\\{{ sar_sis_launch_file }}.lnk"
+    icon: "{{ sar_sis_installation_folder }}\\{{ sar_sis_artifact_name }},0"
+    directory: "{{ sar_sis_installation_folder }}"

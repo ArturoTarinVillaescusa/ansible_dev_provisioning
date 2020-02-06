@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS,Europe/Madrid}){faint} %clr(%5p) %clr(69504){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx</pattern>
+            <outputPatternAsHeader>false</outputPatternAsHeader>
+        </encoder>
+    </appender>
+
+    <appender name="FILE"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS,Europe/Madrid} %5p 10836 --- [%t] %-40.40logger{39} : %m%n%wEx</pattern>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+        </encoder>
+        <file>{{ mssown_mss_log_path }}/MSSTEFOperationsWebNotifications.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>{{ mssown_mss_log_path }}/MSSTEFOperationsWebNotifications.log.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="AUDITOR"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS,Europe/Madrid} %5p 10836 --- [%t] %-40.40logger{39} : %m%n%wEx</pattern>
+            <outputPatternAsHeader>false</outputPatternAsHeader>
+        </encoder>
+        <file>{{ mssown_mss_log_path }}/MSSTEFOperationsWebNotificationsAudit.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>{{ mssown_mss_log_path }}/MSSTEFOperationsWebNotificationsAudit.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>8</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="AUDITOR" level="{{ mssown_mss_log_auditor_level }}" additivity="false">
+        <appender-ref ref="AUDITOR"/>
+    </logger>
+
+    <logger name="com.rentalcar" level="{{ mssown_mss_log_rentalcar_level }}" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <logger name="org.springframework" level="{{ mssown_mss_log_spring_level }}" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root level="{{ mssown_mss_log_root_level }}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

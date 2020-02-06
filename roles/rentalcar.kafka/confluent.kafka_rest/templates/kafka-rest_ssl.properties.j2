@@ -1,0 +1,10 @@
+# Maintained by Ansible
+{% include './includes/base_kafka-rest.properties.j2' %}
+
+#SSL additions
+client.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+client.ssl.truststore.password={{ kerberos.storepass_secret }}
+client.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+client.ssl.keystore.password={{ kerberos.keypass_secret }}
+client.ssl.key.password={{ host_keystore_storepass }}
+client.security.protocol=SSL

@@ -1,0 +1,67 @@
+## COMMON COMPONENT VARS
+# APP       : NOVABASE OPERATIONS WEB NOTIFICATIONS
+# COMPONENT : MSS
+# PREFIX    : mssown_mss
+
+## SYSTEM
+mssown_mss_os             : windows
+mssown_mss_name           : MSSTEFOperationsWebNotifications
+mssown_mss_base_path      : '{{ mssown_base_path }}\mss'
+mssown_mss_required_paths :
+- '{{ mssown_mss_base_path }}\backup'
+- '{{ mssown_mss_base_path }}\app\logs'
+- '{{ mssown_mss_base_path }}\app\bin'
+
+## SERVICE
+
+mssown_mss_svc_name       : mssown
+mssown_mss_svc_user       : LABCEN\svc_mss_own
+mssown_mss_svc_password   : '{{ vault_mssown_mss_svc_password }}'
+mssown_mss_svc_launcher   : '{{ mssown_mss_base_path }}\app\bin\launcher.bat'
+
+
+## SERVICE_PARAMS
+
+mssown_mss_svc_param_name   : '{{ mssown_mss_name }}'
+mssown_mss_svc_param_id     : 1
+mssown_mss_svc_param_port   : 8082
+mssown_mss_svc_param_server : localhost
+mssown_mss_svc_param_5      : '""'
+
+## DEPLOYMENT
+mssown_mss_artifact_name  : '{{ mssown_mss_name }}-{{ mssown_mss_version }}.zip'
+mssown_mss_artifact_jar   : '{{ mssown_mss_name }}-{{ mssown_mss_version }}.jar'
+mssown_mss_artifact_url   : '{{ nexus_url }}/repository/Microservicios/{{ mssown_mss_artifact_name }}'
+mssown_mss_artifact_path  : '{{ mssown_base_path }}\deliveries\{{ mssown_mss_name }}\{{ mssown_mss_version }}'
+
+## DATABASE 
+## prefix   : mssown_mss_db
+mssown_mss_db_user            : __TO_BE_DEFINED__
+mssown_mss_db_jasypt_password : __TO_BE_DEFINED__
+
+## CONFIGURATION
+
+## application.properties
+## prefix   : mssown_mss_app
+
+# TEF OPERATIONS WEB NOTIFICATIONS SETTINGS
+# ===================================
+mssown_mss_app_ecommerce_agency_code                : 50000
+mssown_mss_app_pending_operation_expiration_days    : 7
+mssown_mss_app_pending_operation_chunk_size_notify  : 1000
+mssown_mss_app_pending_operation_chunk_size_check   : 1000
+
+# E-COMMERCE API SETTINGS
+# ===================================
+mssown_mss_app_ecommerce_process_url              : http://localhost:18702/EcommerceAPI/process
+mssown_mss_app_ecommerce_username                 : 1234
+mssown_mss_app_ecommerce_password                 : ENC(oHm5H0B1b02mSOLxNAsKvA==)
+
+
+## logback-spring.xml
+## prefix   : mssown_mss_log
+mssown_mss_log_path                               : ../logs
+mssown_mss_log_auditor_level                      : INFO
+mssown_mss_log_rentalcar_level                      : DEBUG
+mssown_mss_log_spring_level                       : INFO
+mssown_mss_log_root_level                         : INFO

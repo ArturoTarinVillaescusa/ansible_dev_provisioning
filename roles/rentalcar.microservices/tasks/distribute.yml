@@ -1,0 +1,20 @@
+---
+- name: Ensure {{ mss_name }} base application folder exist
+  win_file: 
+     path: "{{ windows_mss_folder }}\\{{ mss_name }}"
+     state: directory
+
+- name: Ensure mss tree folders are present
+  win_file:
+     path: "{{ item }}"
+     state: directory
+  with_items:
+     - "{{ windows_mss_folder }}\\{{ mss_name }}\\logs"
+     - "{{ windows_mss_folder }}\\{{ mss_name }}\\backup"
+     - "{{ windows_mss_folder }}\\{{ mss_name }}\\scripts"
+       
+- name: Download artifact of MSS - {{ mss_artifact_name }} 
+  win_get_url:
+     url: "{{ nexus_url }}/repository/Microservicios/{{ mss_artifact_name }}.zip"
+     dest: "{{ windows_mss_folder }}\\{{ mss_name }}"
+

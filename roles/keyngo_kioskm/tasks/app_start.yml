@@ -1,0 +1,59 @@
+# Start application after deploy
+#
+
+- name  : '>>> Ensure App is running after deploy'
+  block :
+  - name        : '>>>> ENSURE APP/S ARE RUNNING AFTER DEPLOY'
+    debug       :
+       msg        : '{{ inventory_hostname }}'
+
+  - name        : 'Gathering current app session ID'
+    win_shell   : '((query.exe session {{ sys_username }} | Select-String {{ sys_username }}) -split " +")[3]'
+    register    : session_id
+
+  - name        : 'Gathering required user info from registry' 
+    win_reg_stat: 
+      path        : HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\
+      name        : DefaultPassword
+    register    : winlogon_username_password
+
+  - name        : 'Transfering required software to target host'
+    block       :
+    - name      : Fetch required software from target host
+      win_get_url :
+         url        : http://nexus.rentalcar.es/repository/tools/PsExec.exe
+         dest       : c:\windows\System32
+      when        : kioskm_fetch == 'yes'
+
+    - name        : 'Send binary form Ansible server'
+      block       :
+      - name      : 'Download software to ansible server'
+        local_action : get_url url=http://nexus.rentalcar.es/repository/tools/PsExec.exe dest=/tmp/PsExec.exe
+      - name      : 'Send artifact to target host'
+        win_copy  :
+           src           : /tmp/PsExec.exe
+           dest          : c:\windows\System32\
+      when        : kioskm_fetch == 'no'
+
+
+
+  - name        : 'Starting kiosk application Ignore errors true [ the kiosk user session is not active or psexec.exe is not present ]'
+    win_psexec  :
+       chdir      : C:\RENTALCAR\kiosk
+       command    : C:\RENTALCAR\kiosk\kiosk.bat
+       interactive: yes
+       wait       : no
+       session    : '{{ session_id["stdout_lines"][0] }}'
+       username   : RENTALCAR\{{ sys_username }}
+       password   : '{{ winlogon_username_password["value"] }}'
+       
+  - name        : 'Deleting required software from target host'
+    win_file    :
+       path       : c:\windows\System32\psexec.exe
+       state      : absent
+  rescue:
+     - name         : 'Force reboot if any error starting the app'
+       win_reboot   :
+
+      
+

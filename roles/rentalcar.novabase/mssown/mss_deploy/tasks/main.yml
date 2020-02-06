@@ -1,0 +1,24 @@
+---
+- name        : Setup target System
+  import_tasks: setup.yml
+  when: mssown_mss_op == 'setup' or
+        mssown_mss_op == 'distribute' or
+        mssown_mss_op == 'prepare' or
+        mssown_mss_op == 'deploy'
+
+- name        : Distribute required software
+  import_tasks: distribute.yml
+  when: mssown_mss_op == 'distribute' or
+        mssown_mss_op == 'prepare' or
+        mssown_mss_op == 'deploy'
+
+- name        : Ensure prerequisites are present, and new deployment ready
+  import_tasks: prepare.yml
+  when: mssown_mss_op == 'prepare' or
+        mssown_mss_op == 'deploy'
+
+- name        : Deploy target version 
+  block       :
+     - import_tasks: deploy.yml
+  when: mssown_mss_op == 'deploy'
+

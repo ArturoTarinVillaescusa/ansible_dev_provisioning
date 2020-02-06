@@ -1,0 +1,107 @@
+- name: Kerberos local server
+  hosts: kerberoslocalserver
+  tags:
+    - always
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/kafkakerberoslocalserver
+    when: security_mode in ["kerberos", "kerberos_ssl", "kerberos_ssl_customcerts"]
+
+
+
+- name: Host Prerequisites
+  hosts: zookeeper:kafka_broker:schema_registry:kafka_connect:ksql:control_center:kafka_rest
+  tags:
+    - always
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.common
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.kerberos
+    when: security_mode in ["kerberos", "kerberos_ssl", "kerberos_ssl_customcerts"]
+
+# Run the cert generation on the first zookeeper instance, which has java
+- name: Certificate Generation
+  hosts: zookeeper[0]
+  gather_facts: no
+  tags:
+    - always
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.ssl_customcerts
+    when: security_mode in ["kerberos_ssl_customcerts", "ssl_customcerts"]
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.ssl_CA
+    when: security_mode in ["ssl", "sasl_ssl", "kerberos_ssl"]
+
+- name: Certificate Syncing
+  hosts: zookeeper:kafka_broker:schema_registry:kafka_connect:ksql:control_center:kafka_rest
+  tags:
+    - always
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.ssl_sync
+    when: security_mode in ["kerberos_ssl_customcerts", "ssl_customcerts", "ssl", "sasl_ssl", "kerberos_ssl"]
+
+- name: Zookeeper Provisioning
+  hosts: zookeeper
+  gather_facts: no
+  tags:
+    - zookeeper
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.zookeeper
+
+- name: Kafka Broker Provisioning
+  hosts: kafka_broker
+  gather_facts: no
+  tags:
+    - kafka_broker
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.kafka_broker
+
+- name: Schema Registry Provisioning
+  hosts: schema_registry
+  gather_facts: no
+  tags:
+    - schema_registry
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.schema_registry
+
+# - name: Kafta Connect Provisioning
+#   hosts: kafka_connect
+#   gather_facts: no
+#   tags:
+#     - kafka_connect
+#   tasks:
+#   - import_role:
+#       name: roles/rentalcar.kafka/confluent.kafka_connect
+
+# - name: KSQL Provisioning
+#   hosts: ksql
+#   gather_facts: no
+#   tags:
+#     - ksql
+#   tasks:
+#   - import_role:
+#       name: roles/rentalcar.kafka/confluent.ksql
+
+# - name: Control Center Provisioning
+#   hosts: control_center
+#   gather_facts: no
+#   tags:
+#     - control_center
+#   tasks:
+#   - import_role:
+#       name: roles/rentalcar.kafka/confluent.control_center
+
+- name: Kafka Rest Provisioning
+  hosts: kafka_rest
+  gather_facts: no
+  tags:
+    - kafka_rest
+  tasks:
+  - import_role:
+      name: roles/rentalcar.kafka/confluent.kafka_rest

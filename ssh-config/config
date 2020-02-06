@@ -1,0 +1,33 @@
+Host ubu18.rentalcar.local
+   Hostname 192.168.15.7
+   User vagrant
+   StrictHostKeyChecking no
+   ControlMaster auto
+   IdentityFile ~/.ssh/id_rsa
+
+Host ubu16.rentalcar.local
+   Hostname 192.168.15.9
+   User vagrant
+   StrictHostKeyChecking no
+   ControlMaster auto
+   IdentityFile ~/.ssh/id_rsa
+
+Host rhel.rentalcar.local
+   Hostname 192.168.15.8
+   User vagrant
+   StrictHostKeyChecking no
+   ControlMaster auto
+   IdentityFile ~/.ssh/id_rsa
+
+Host redis-lab
+   Hostname 10.0.12.39
+   User administrador
+   StrictHostKeyChecking no
+   ControlMaster auto
+   IdentityFile ~/.ssh/id_rsa
+
+Host alcanssrv
+   Hostname 172.29.77.20
+   user admin.user
+   StrictHostKeyChecking no
+   IdentityFile ~/.ssh/id_rsa

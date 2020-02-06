@@ -1,0 +1,11 @@
+- name        : Check if {{ mssown_mss_svc_name }} service exists in {{ ansible_hostname }}
+  win_service :
+     name         : '{{ mssown_mss_svc_name }}'
+  register: service_info
+
+- name        : 'Insall service {{ mssown_mss_svc_name }} in {{ ansible_hostname }} if not present '
+  win_nssm    :
+   executable   : '{{ windows_nssm_exe64 }}'
+   name         : '{{ mssown_mss_svc_name }}'
+   application  : '{{ mssown_mss_svc_launcher }}'
+  when        : service_info['exists'] == false

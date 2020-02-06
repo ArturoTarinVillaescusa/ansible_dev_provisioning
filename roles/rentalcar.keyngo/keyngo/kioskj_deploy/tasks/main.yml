@@ -1,0 +1,34 @@
+---
+- name        : Template example
+  block       :
+  - name      : Setting {{ inventory_hostname }} OUT
+    set_fact  :
+        keyngo_kioskj_nginx_conf_kioskj_out: 
+        - "{{ inventory_hostname }}"
+  - name      : Reloading nginx
+    import_tasks: management/reload_nginx.yml
+  when        : keyngo_kioskj_op == 'template'
+
+- name        : Setup target System
+  import_tasks: setup.yml
+  when: keyngo_kioskj_op == 'setup' or
+        keyngo_kioskj_op == 'distribute' or
+        keyngo_kioskj_op == 'prepare' or
+        keyngo_kioskj_op == 'deploy'
+
+- name        : Distribute required software
+  import_tasks: distribute.yml
+  when: keyngo_kioskj_op == 'distribute' or
+        keyngo_kioskj_op == 'prepare' or
+        keyngo_kioskj_op == 'deploy'
+
+- name        : Ensure prerequisites are present, and new deployment ready
+  import_tasks: prepare.yml
+  when: keyngo_kioskj_op == 'prepare' or
+        keyngo_kioskj_op == 'deploy'
+
+- name        : Deploy target version 
+  block       :
+     - import_tasks: deploy.yml
+  when: keyngo_kioskj_op == 'deploy'
+

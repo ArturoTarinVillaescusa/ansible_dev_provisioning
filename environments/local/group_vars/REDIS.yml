@@ -1,0 +1,11 @@
+---
+### REDIS ###
+
+redis_port: 6379
+redis_bind_interface: 0.0.0.0
+redis_loglevel: "notice"
+redis_logfile: /var/log/redis/redis-server.log
+redis_maxmemory: 32000mb
+redis_requirepass: '{{ vault_redis_password }}'
+redis_disable_transparent_hugepage: true
+redis_swap_disable: true

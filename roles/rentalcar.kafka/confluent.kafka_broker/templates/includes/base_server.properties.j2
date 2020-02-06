@@ -1,0 +1,89 @@
+zookeeper.connect={% for host in groups['zookeeper'] %}{% if loop.index > 1%},{% endif %}{{ host }}:{{zookeeper.properties.clientPort}}{% endfor %}
+
+############################# Log Basics #############################
+
+# A comma separated list of directories under which to store log files
+log.dirs={% for logdir in kafka_broker.datadir %}{% if loop.index > 1%},{% endif %}{{ logdir }}{% endfor %}
+
+############################# Server Basics #############################
+# The id of the broker. This must be set to a unique integer for each broker.
+broker.id={{ broker_id | default(groups.kafka_broker.index(inventory_hostname) + 1)}}
+
+############################# Socket Server Settings #############################
+# The address the socket server listens on. It will get the value returned from
+# java.net.InetAddress.getCanonicalHostName() if not configured.
+#   FORMAT:
+#     listeners = listener_name://host_name:port
+#   EXAMPLE:
+#     listeners = PLAINTEXT://your.host.name:9092
+#listeners=PLAINTEXT://:9092
+# listeners=SASL_PLAINTEXT://{{ inventory_hostname }}.{{ fqdn }}:9093
+# listeners=PLAINTEXT://0.0.0.0:9092,SSL://0.0.0.0:9093
+listeners=PLAINTEXT://0.0.0.0:9092,SSL://0.0.0.0:9093,SASL_PLAINTEXT://0.0.0.0:9094
+# listeners=PLAINTEXT://0.0.0.0:9092,SSL://0.0.0.0:9093,SASL_SSL://0.0.0.0:9094
+
+# Hostname and port the broker will advertise to producers and consumers. If not set,
+# it uses the value for "listeners" if configured.  Otherwise, it will use the value
+# returned from java.net.InetAddress.getCanonicalHostName().
+# advertised.listeners=PLAINTEXT://your.host.name:9092
+# advertised.listeners=PLAINTEXT://{{ inventory_hostname }}:9092,SSL://{{ inventory_hostname }}:9093
+advertised.listeners=PLAINTEXT://{{ inventory_hostname }}:9092,SSL://{{ inventory_hostname }}:9093,SASL_PLAINTEXT://{{ inventory_hostname }}:9094
+# advertised.listeners=PLAINTEXT://{{ inventory_hostname }}:9092,SSL://{{ inventory_hostname }}:9093,SASL_SSL://{{ inventory_hostname }}:9094
+
+{% for key, value in kafka_broker.properties.items() %}
+{{key}}={{value}}
+{% endfor %}
+
+
+
+sasl.enabled.mechanisms=GSSAPI,PLAIN
+
+# We are specifying kafka as the Kerberos service name
+# IT’S IMPORTANT this service name needs to match exactly our Kerberos principal from the kafka.service.keytab
+# Remember we have set this to kafka/<kafkaservername>@<fqdn>.
+# So in our example below, “kafka” is matching correctly with the username in the principal
+sasl.kerberos.service.name=kafka
+
+# Kerberos / Sasl authentication between Kafka brokers
+sasl.mechanism.inter.broker.protocol=GSSAPI
+
+# Enable Kerberos / SASL for inter-broker communication
+# Not directly related to enabling Authorization, but we need to set this to SASL_SSL
+# to ensure that also the brokers communicate amongst each other by using Kerberos
+# to have also the username being part of the communication. If we don’t do this,
+# the default value is set to PLAINTEXT, and this means the brokers will use the
+# default user ‘annonymous’ to talk to each other and by that this will cause trouble
+# by specifying our ACLs
+# security.inter.broker.protocol=SASL_SSL
+security.inter.broker.protocol=SASL_PLAINTEXT
+
+#########################################################################
+# Confluent Community specific configuration for authentication with SASL
+#
+# listener.name.sasl_ssl.scram-sha-256.sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required \
+#   username="admin" \
+#   password="admin-secret";
+
+# listener.name.sasl_ssl.plain.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required \
+#   username="admin" \
+#   password="admin-secret" \
+#   user_admin="admin-secret" \
+#   user_alice="alice-secret";
+
+###############################################################
+# ACL authorization enabling
+#
+# OOTB class. You can implement your custom ones
+authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer
+
+# For these users all ACLs are bypassed, no ACLs will be checked for them and
+# every access to your topic and to Kafka in general is being allowed
+super.users=User:admin;User:kafka;User:writer
+
+# We are denying any access for a user which is not part of an ACL
+# allow.everyone.if.no.acl.found=false
+allow.everyone.if.no.acl.found=true
+
+# Enforce ACLs to be set on Zookeeper znodes
+#
+zookeeper.set.acl=true

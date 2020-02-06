@@ -1,0 +1,113 @@
+### ANSIBLE ###
+
+## WINDOWS
+ansible_user                            : administrator
+ansible_port                            : 5986
+ansible_connection                      : winrm
+ansible_winrm_server_cert_validation    : ignore
+ansible_password                        : "{{ vault_ansible_password }}"
+
+## LINUX [ TODO ]
+# In order to deploy to Linux hosts we need to set different ansible_* values
+
+
+
+### GLOBAL ###
+nexus_url                               : "https://nexus.rentalcar.es"
+jasypt_master_env                       : "${JASYPT_MASTER_PASS}"
+jasypt_master_password                  : "{{ vault_jasypt_master_password }}"
+
+## DATABASE 
+sigger_db_host                          : "BETASERVER"
+sigger_db_name                          : "BDSIGGER"
+
+## WINDOWS
+# GLOBAL VARS FOR WINDOWS HOSTS
+# TODO: Prefix all windows path vars with windows_ to avoid errors with linux ones
+software_requeriments_folder: "C:\\RENTALCAR\\Requeriments"
+windows_software_requeriments_folder: "C:\\RENTALCAR\\Requeriments"
+windows_temp_folder: "C:\\Windows\\Temp"
+# common folder for all mss and auxiliar/common software
+windows_mss_folder: "C:\\Microservices"
+windows_mss_req_folder: "C:\\Microservices\\Auxiliares"
+windows_domain: "LABCEN.local"
+
+# TODO: Create a role to install nssm if not present in host
+windows_nssm_exe64: "C:\\Microservices\\Auxiliares\\nssm-2.24\\win64\\nssm.exe"
+
+## LINUX
+# GLOBAL VARS FOR LINUX HOSTS
+
+## SAR GLOBAL ##
+sar_service_user: "svc_app_sisctl"
+sar_bridge_server1: "192.168.100.63"
+sar_bridge_server2: "192.168.100.63"
+
+### SAR CHECKER ###
+sar_checker_folder: "C:\\Daemons\\CHECKER"
+sar_checker_artifact_name: "CheckerDaemons.exe"
+sar_checker_ini: "CheckerDaemons.ini"
+sar_checker_service_user_password: "{{ vault_sar_service_user_password }}"
+
+
+### SAR SIS ###
+sar_sis_service_user: "{{ sar_service_user }}"
+sar_sis_service_user_password: "{{ vault_sar_service_user_password }}" 
+sar_sis_service_port: "9002"
+sar_sis_db_server: "{{ sigger_db_host }}"
+sar_sis_db_name: "{{ sigger_db_name }}"
+sar_sis_dbsis_name: "BDSIGGER"
+sar_sis_artifact_name: "SARSISDWebServer.exe"
+sar_sis_properties_file: "SARSISDWebServer.ini"
+sar_sis_db_ini: "SIGGER.ini"
+sar_sis_data_ini: "PrecargasDaos.ini"
+sar_sis_nexus_url: "https://nexus.rentalcar.es/repository/SAR/"
+sar_sis_installation_folder: "c:\\SARSISD"
+sar_sis_backup_folder: "c:\\SARSISD\\BACKUP"
+sar_sis_certs_folder: "c:\\SARSISD\\certificados"
+sar_sis_logs_folder: "c:\\SARSISD\\Logs"
+sar_sis_esquemas_folder: "c:\\SARSISD\\Esquemas_Privados"
+sar_sis_launch_file: "SIS.bat"
+sar_sis_log_server: "192.168.100.63"
+sar_sis_redis_pass: "{{ vault_sar_sis_redis_pass }}"
+sar_sis_bat_args: " "
+
+### SAR CDV ###
+sar_cdv_service_user: "{{ sar_service_user }}"
+sar_cdv_service_user_password: "{{ vault_sar_service_user_password }}"
+sar_cdv_service_port: "9003"
+sar_cdv_db_server: "{{ sigger_db_host }}"
+sar_cdv_db_name: "{{ sigger_db_name }}"
+sar_cdv_artifact_name: "CDVSID.exe"
+sar_cdv_properties_file: "CDVSID.ini"
+sar_cdv_data_ini: "PrecargasDaos.ini"
+sar_cdv_nexus_url: "https://nexus.rentalcar.es/repository/SAR/"
+sar_cdv_installation_folder: "c:\\DAEMONS\\CDVSID"
+sar_cdv_launch_file: "CDV.bat"
+sar_cdv_log_server: "192.168.100.63"
+sar_cdv_bat_args: " "
+
+
+### SAR TAR ###
+sar_tar_service_user: "{{ sar_service_user }}"
+sar_tar_service_user_password: "{{ vault_sar_service_user_password }}"
+sar_tar_service_port: "9004"
+sar_tar_db_server: "{{ sigger_db_host }}"
+sar_tar_db_name: "{{ sigger_db_name }}"
+sar_tar_artifact_name: "TARSID.exe"
+sar_tar_properties_file: "TARSID.ini"
+sar_tar_data_ini: "PrecargasDaos.ini"
+sar_tar_nexus_url: "https://nexus.rentalcar.es/repository/SAR/"
+sar_tar_installation_folder: "c:\\DAEMONS\\TARSID"
+sar_tar_launch_file: "TAR.bat"
+sar_tar_log_server: "192.168.100.63"
+sar_tar_bat_args: " "
+
+########  MICROSERVICES  ##########
+
+### GLOBAL ###
+mss_properties_file: "{{ mss_name }}.application.properties"
+mss_installation_global_folder: "C:\\Microservices\\"
+mss_artifact_name: "{{ mss_app_artifact }}-{{ mss_version }}"
+
+

@@ -1,0 +1,43 @@
+---
+- name: "Ansible | List all known variables and facts"
+  debug:
+    var: hostvars[inventory_hostname]
+
+- name: Ensure requirements folder exist
+  win_file:
+     path: "{{ windows_temp_folder }}\\java"
+     state: directory
+
+- name: Check if Java artifact is distributed
+  win_file:
+     path: "{{ windows_temp_folder }}\\java\\{{ mss_java_artifact }}"
+     state: absent
+
+- name: Send Java version if is required
+  win_get_url: 
+     url: "{{ nexus_url }}/repository/tools/{{ mss_java_artifact }}"
+     dest: "{{ windows_temp_folder }}\\java"
+
+- name: Ensure configured java version is Installed
+  win_package:
+     path              : "{{ windows_temp_folder }}\\java\\{{ mss_java_artifact }}"
+     product_id        : "{26A24AE4-039D-4CA4-87B4-2F83218091F0}"
+     state             : present
+     arguments         :
+     - /s /L c:\java_setup.log
+
+- name: Check if service is already installed
+  win_service:
+     name: "{{ mss_name }}"
+  register: service_exist
+
+- name: Check nssm
+  win_file:
+      path: "{{ windows_mss_req_folder }}\\nssm"
+      state: directory
+
+- name: Install nssm if it is not installed
+  win_get_url:
+     url: "{{ nexus_url }}/repository/tools/nssm.exe"
+     dest: "{{ windows_mss_req_folder }}\\nssm"
+

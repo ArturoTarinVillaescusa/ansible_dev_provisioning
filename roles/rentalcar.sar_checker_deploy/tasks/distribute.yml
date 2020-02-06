@@ -1,0 +1,11 @@
+---
+
+- name: Ensure artifacts folder exist
+  win_file:
+    path: "{{ sar_checker_folder }}"
+    state: directory
+
+- name: Transfer PSExec
+  win_get_url:
+    url: "{{ nexus_url }}/repository/tools/PsExec.exe"
+    dest: "c:\\windows\\System32"

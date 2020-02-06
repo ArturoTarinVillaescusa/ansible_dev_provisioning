@@ -1,0 +1,59 @@
+---
+##               ###
+## Base software ###
+##               ###
+
+- name: Check to see if 7Zip is installed
+  win_stat: path='C:\Program Files\7-Zip\7z.exe'
+  register: z7_installed
+
+- name: Ensure 7zip folder exist
+  win_file:
+    path: "C:\\Program Files\\7-Zip"
+    state: directory
+  when: not z7_installed.stat.exists  
+
+- name: Download 7Zip
+  win_get_url:
+    url: '{{ nexus_url }}/repository/buildTools/7z.exe'
+    dest: 'C:\\Program Files\\7-Zip\\'
+  when: not z7_installed.stat.exists
+
+- name: Download 7Zip dll
+  win_get_url:
+    url: '{{ nexus_url }}/repository/buildTools/7z.dll'
+    dest: 'C:\\Program Files\\7-Zip\\'
+  when: not z7_installed.stat.exists 
+
+#- name: Installing 7zip
+#  win_package:
+#     path: '{{ windows_temp_folder }}\\7z.exe'
+#     creates_path: 'C:\\Program Files\\7-Zip\\7z.exe'
+#     arguments: /S
+#     creates_version: 16.04
+#     state: present
+#  when: not zip7_installed.stat.exists
+
+#- name: Transfer PSExec
+#  win_get_url:
+#    url: {{ nexus_url }}/repository/tools/PsExec.exe
+#    dest: c:\windows\System32
+#
+#- name: Ensure CMTrace is already installed
+#  win_stat: path='{{ software_requeriments_folder }}\CMTrace\CMTrace.exe'
+#  register: cmtrace_installed
+#
+#- name: Create CMTrace needed folder
+#  win_file: 
+#    src: {{ software_requeriments_folder}}/{{ item }}
+#    state: directory
+#  with_items:
+#    - CMTrace
+#  when: not cmtrace_installed.stat.exists
+#
+#- name: "Upload CMTrace"
+#  win_copy:
+#    src: windows/CMTrace.exe
+#    dest: {{ software_requeriments_folder }}\CMTrace\CMTrace.exe
+#  when: not cmtrace_installed.stat.exists
+#

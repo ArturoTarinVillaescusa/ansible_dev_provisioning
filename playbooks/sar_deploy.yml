@@ -1,0 +1,8 @@
+---
+- hosts: "{{ hosts }}"
+  gather_facts: yes
+  roles:
+    - rentalcar.sar_sis_deploy
+    - rentalcar.sar_cdv_deploy
+    - rentalcar.sar_tar_deploy
+    - rentalcar.sar_checker_deploy

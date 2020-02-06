@@ -1,0 +1,42 @@
+rentalcar.daemon=1
+rentalcar.daemon.version={{ mssown_mss_version }}
+
+# ENCRYPTION PROPERTIES
+# =====================
+# Encryption password, must be set as system environment variable.
+# If no env variable defined, use default (testing purposes)
+ jasypt.encryptor.password={{ jasypt_master_env }}
+
+# ENVIRONMENT VARIABLES
+# =====================
+ DBSERVER = {{ sigger_db_host }}
+ DBNAME = {{ sigger_db_name }}
+ DBUSER = {{ mssown_mss_db_user }}
+ DBPASSWORD = ENC({{ mssown_mss_db_jasypt_password }})
+
+# DATA SOURCE SETTINGS
+# ===============================
+ spring.datasource.url = jdbc:sqlserver://${DBSERVER};databaseName=${DBNAME};
+ spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+ spring.datasource.username = ${DBUSER}
+ spring.datasource.password = ${DBPASSWORD}
+
+# TEF OPERATIONS WEB NOTIFICATIONS SETTINGS
+# ===================================
+ecommerceAgencyCode={{ mssown_mss_app_ecommerce_agency_code }}
+pendingOperationExpirationDays={{ mssown_mss_app_pending_operation_expiration_days }}
+pendingOperationChunkSize.notify={{ mssown_mss_app_pending_operation_chunk_size_notify}}
+pendingOperationChunkSize.check={{ mssown_mss_app_pending_operation_chunk_size_check }}
+
+# SCHEDULER PROPERTIES
+#===================================
+rentalcar.scheduler.service.name=MSSTEFOperationsWebNotifications
+rentalcar.scheduler.waitingTask.timeOut=600
+
+# E-COMMERCE API SETTINGS
+# ===================================
+ecommerce.process.url={{ mssown_mss_app_ecommerce_process_url }}
+ecommerce.process.url=${ecommerce.base.url}/process
+ecommerce.check.url=${ecommerce.base.url}/check
+ecommerce.username={{ mssown_mss_app_ecommerce_username }}
+ecommerce.password={{ mssown_mss_app_ecommerce_password }}

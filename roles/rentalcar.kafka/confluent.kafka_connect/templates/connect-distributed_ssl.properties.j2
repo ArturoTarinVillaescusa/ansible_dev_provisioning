@@ -1,0 +1,34 @@
+# Maintained by Ansible
+{% include './includes/base_connect-distributed.properties.j2' %}
+
+#SSL additions
+ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+ssl.truststore.password={{ kerberos.storepass_secret }}
+ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+ssl.keystore.password={{ kerberos.keypass_secret }}
+ssl.key.password={{ host_keystore_storepass }}
+security.protocol=SSL
+producer.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+producer.ssl.truststore.password={{ kerberos.storepass_secret }}
+producer.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+producer.ssl.keystore.password={{ kerberos.keypass_secret }}
+producer.ssl.key.password={{ host_keystore_storepass }}
+producer.security.protocol=SSL
+consumer.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+consumer.ssl.truststore.password={{ kerberos.storepass_secret }}
+consumer.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+consumer.ssl.keystore.password={{ kerberos.keypass_secret }}
+consumer.ssl.key.password={{ host_keystore_storepass }}
+consumer.security.protocol=SSL
+producer.confluent.monitoring.interceptor.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+producer.confluent.monitoring.interceptor.ssl.truststore.password={{ kerberos.storepass_secret }}
+producer.confluent.monitoring.interceptor.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+producer.confluent.monitoring.interceptor.ssl.keystore.password={{ kerberos.keypass_secret }}
+producer.confluent.monitoring.interceptor.ssl.key.password={{ host_keystore_storepass }}
+producer.confluent.monitoring.interceptor.security.protocol=SSL
+consumer.confluent.monitoring.interceptor.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+consumer.confluent.monitoring.interceptor.ssl.truststore.password={{ kerberos.storepass_secret }}
+consumer.confluent.monitoring.interceptor.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+consumer.confluent.monitoring.interceptor.ssl.keystore.password={{ kerberos.keypass_secret }}
+consumer.confluent.monitoring.interceptor.ssl.key.password={{ host_keystore_storepass }}
+consumer.confluent.monitoring.interceptor.security.protocol=SSL

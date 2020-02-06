@@ -1,0 +1,11 @@
+[ubuntu16]
+ubu16.rentalcar.local
+
+[ubuntu18]
+ubu18.rentalcar.local
+
+[centos]
+rhel.rentalcar.local
+
+[REDIS]
+ubu16.rentalcar.local

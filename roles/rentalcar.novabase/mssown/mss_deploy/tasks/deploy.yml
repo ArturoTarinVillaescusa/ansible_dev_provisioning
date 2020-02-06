@@ -1,0 +1,53 @@
+## Deploy
+## Creates the service if not exists, stops it, backups the current version, deploy the new one and starts the service again
+
+- name  : '### DEPLOY ### '
+  block :
+  - name        : '>>>> DEPLOY NEW VERSION'
+    debug       :
+       msg            : 'Deploying  {{ inventory_hostname }} version {{ mssown_mss_version }} in {{ ansible_hostname }}'
+  
+  - name        : 'Ensure service {{ mssown_mss_version }} installed and stopped in {{ ansible_hostname }} '
+    import_tasks: management/service_stopped.yml
+
+  - name        : 'Backup current running version of {{ mssown_mss_svc_name }} in {{ ansible_hostname }}'
+    block       :
+    - name        : 'Ensure backup folder is present' 
+      win_file    : 
+        path          : '{{ mssown_mss_base_path }}\backup\form_version_{{ mssown_mss_version }}'
+        state         : directory
+    - name        : 'Check if a previous backup exists'
+      win_stat    :
+         path         : '{{ mssown_mss_base_path }}\backup\form_version_{{ mssown_mss_version }}\backup_done.txt'
+      register        : backup_present
+    - name        : 'Backup current running version of {{ mssown_mss_svc_name }} in {{ ansible_hostname }}'
+      block       :
+      - name        : 'Copy current deployed version to backup folder'
+        win_copy    :
+           remote_src   : yes
+           src          : '{{ mssown_mss_base_path }}\app\bin'
+           dest         : '{{ mssown_mss_base_path }}\backup\form_version_{{ mssown_mss_version }}\'
+
+      - name        : 'Set backup performed flag in backup directory'
+        win_file    :
+           path         : '{{ mssown_mss_base_path }}\backup\form_version_{{ mssown_mss_version }}\backup_done.txt'
+           state        : touch
+      when       : backup_present['stat']['exists'] == false
+
+  - name      : 'Install {{ mssown_mss_version }} version of {{ mssown_mss_svc_name }} in {{ ansible_hostname }}'
+    block     :
+    - name        : 'Clean current prod folder'
+      win_file    :
+        path          : '{{ mssown_mss_base_path }}\app\bin'
+        state         : absent
+    - name        : 'Move files'
+      win_copy    :
+         remote_src   : yes
+         src          : '{{ mssown_mss_artifact_path }}\delivery\'
+         dest         : '{{ mssown_mss_base_path }}\app\bin\'
+
+  - name        : 'Ensure service is started'
+    import_tasks     : management/service_started.yml
+
+     
+    

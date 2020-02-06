@@ -1,0 +1,114 @@
+## Deploy
+## Deploy target version in the kiosk
+
+- name  : '### DEPLOY ### '
+  block :
+  - name        : '>>>> DEPLOYING TARGET VERSION'
+    debug       :
+       msg        : '{{ inventory_hostname }}'   
+  - name          : 'Unzip Application Artifact'
+    win_unzip     :
+       src            : c:\RENTALCAR\kiosk_{{ kioskm_version }}\app_src.zip
+       dest           : c:\RENTALCAR\kiosk_{{ kioskm_version }}
+       delete_archive : yes
+  
+  - name          : 'Apply Required Configuration'
+    block         :
+    - name        : 'Setting application.properties configuration'
+      win_template:
+         src          : templates/configuration/application.properties.j2
+         dest         : c:\RENTALCAR\kiosk_{{ kioskm_version }}\application.properties
+    - name        : 'Setting cloud.properties configuration'
+      win_template:
+         src          : templates/configuration/cloud.properties.j2
+         dest         : c:\RENTALCAR\kiosk_{{ kioskm_version }}\cloud.properties
+
+  - name          : 'Backup version only if first deployment'
+    block         :
+    - name        : 'Backup current version if not backed-up previously'
+      win_stat    :
+         path       : c:\RENTALCAR\backup\kiosk_rollback_from_{{ kioskm_version }}\backup_done.txt
+      register    : rollback_present
+
+    - name        : 'Backing previous version'
+      block       :
+      - name        : 'Ensure backup folder is present'
+        win_file    :
+          path        : c:\RENTALCAR\backup\kiosk_rollback_from_{{ kioskm_version }}
+          state       : directory
+
+      - name        : 'Copy kiosk folder content to backup folder'
+        win_shell   : xcopy c:\RENTALCAR\kiosk /E/H/K/O/Y c:\RENTALCAR\backup\kiosk_rollback_from_{{ kioskm_version }}
+        args        :
+          executable  : cmd
+
+      - name        : 'Create Backup performed flag file'
+        win_file    :
+          path        : c:\RENTALCAR\backup\kiosk_rollback_from_{{ kioskm_version }}\backup_done.txt
+          state       : touch
+      when        : rollback_present['stat']['exists'] == false
+
+  - name          : Patch Kiosk folder
+    block         :
+    - name        : 'Delete current kiosk folder content'
+      win_shell   : DEL /F/Q/S *.* > NUL
+      args        :
+         executable   : cmd
+         chdir        : c:\RENTALCAR\kiosk
+
+    - name        : 'Check if kiosk\videos folder is present'
+      win_stat    :
+        path        : c:\RENTALCAR\kiosk\videos
+      register    : videos_folder_present
+
+    - name        : 'Delete kiosk\videos folder'
+      win_shell   : RMDIR /Q/S videos
+      args        :
+        executable  : cmd
+        chdir       : c:\RENTALCAR\kiosk
+      when        : videos_folder_present['stat']['exists'] == true
+
+    - name        : 'Copy new version content to production folder'
+      win_shell   : xcopy c:\RENTALCAR\kiosk_{{ kioskm_version}} /E/H/K/O/Y c:\RENTALCAR\kiosk
+      args        :
+        executable  : cmd      
+
+  - name          : Final configuration
+    block       :
+    #- name        : 'Copy New version start script to desktop'
+      #win_copy    :
+        #src              : C:\RENTALCAR\kiosk\kiosk.lnk
+        #dest             : C:\Users\Public\Desktop\
+        #remote_src       : yes
+
+    #- name        : 'Add start script to windows startup'
+      #win_copy    :
+        #src              : C:\RENTALCAR\kiosk\kiosk.lnk
+        #dest             : C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\
+        #remote_src       : yes
+        
+    - name: Create an application shortcut on the desktop
+      win_shortcut:
+        src: C:\RENTALCAR\kiosk\kiosk.bat
+        dest: C:\Users\Public\Desktop\kiosk.lnk
+        icon: C:\RENTALCAR\KIOSK\favicon.ico,0
+
+    - name: Add start script to windows startup
+      win_shortcut:
+        src: C:\RENTALCAR\kiosk\kiosk.bat
+        dest: C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\kiosk.lnk
+        icon: C:\RENTALCAR\KIOSK\favicon.ico,0
+
+    - name        : 'Add Execution permission to the RENTALCAR folder'
+      win_acl     :
+        user              : everyone
+        path              : C:\RENTALCAR
+        type              : allow
+        rights            : FullControl
+        state             : present
+
+    - name        : 'Remove deploy folder'
+      win_file    :
+        path             : c:\RENTALCAR\kiosk_{{ kioskm_version }}
+        state            : absent
+

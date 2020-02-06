@@ -1,0 +1,26 @@
+all:
+  vars:
+    fqdn:  LABCEN.LOCAL
+    kerberos:
+      realm: LABCEN.LOCAL
+      kdc_hostname: broker1.labcen.local
+      admin_hostname: broker1.labcen.local
+      keytab_source_dir: /etc/security/keytabs
+      keytabs_folder: /etc/security/keytabs
+      jks_store_folder: /etc/security/keytabs/ssl
+      krb_master_password: passw0rdINO78
+      storepass_secret: NDLKJH(=3e2
+      keypass_secret: )YOJ·=UDWk
+      validity_days: 365
+    ssl_path: /etc/security
+    ssl_ca_certificate: ca-cert
+    ssl_host_key: cert-signed
+    ssl_private_key: keystore.p12
+    ssl_ca_certificate_path: { ssl_path }/keytabs/ssl/ca-cert
+    ssl_host_key_path: { ssl_path }/keytabs/ssl/cert-signed
+    ssl_private_key_path: { ssl_path }/keytabs/keystore.p12
+    host_keystore_storepass: WHGERGRTH·&Y&
+    host_truststore_storepass: B%YHWETH/%·
+    ca_cert_password: ·&U·%&HYNRT$T
+    host_cert_password: QB&BYTHDBAQ-
+    privatekey_keystore_password: GQ$JHWEAHW$

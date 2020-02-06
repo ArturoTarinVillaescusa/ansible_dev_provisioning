@@ -1,0 +1,54 @@
+## setup system
+## All task required to leave the system in the expected status before deploy the application. 
+
+- name  : '### SETUP SYSTEM ###'
+  block :
+  - name        : '>>>> SETUP SYSTEM'
+    debug       :
+       msg        : '{{ inventory_hostname }}'
+  - name        : 'Ensure RDP is allowed'
+    win_regedit :
+       path             : HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server
+       name             : fDenyTSConnections
+       data             : 0
+       type             : dword
+       state            : present
+  
+  - name          : 'Ensuring windows firewall is deactivated'
+    win_command   : netsh advfirewall set allprofiles state off
+
+
+  - name          : 'Configuring System TimeZone'
+    win_timezone  :
+       timezone      : '{{ sys_timezone }}'  
+
+  - name          : 'Ensure required folders are present'
+    win_file      :
+       path          : '{{ item }}'
+       state         : directory
+    with_items    :
+    - c:\RENTALCAR\backup
+    - c:\RENTALCAR\kiosk
+    - c:\RENTALCAR\requirements
+
+  - name          : 'Ensure jasypt environment variable is set propperly'
+    win_environment:
+       name             : '{{ app_jasypt_var }}'
+       value            : '{{ app_jasypt_key }}'
+       level            : machine
+       state            : present
+
+  - name        : 'Remove deprecated monitoring service if present'
+    win_service :
+       name             : 'Kiosk Monitor Service 1.0'
+       state            : absent
+
+
+  - name        : 'Ensure conectivity with minero endpoint'
+    win_wait_for    :
+       host         : 172.30.72.92
+       port         : 514
+       state        : started
+       delay        : 0
+       timeout      : 5
+    ignore_errors   : yes

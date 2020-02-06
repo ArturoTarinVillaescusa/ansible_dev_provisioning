@@ -1,0 +1,592 @@
+all:
+   children:
+      kiosk:
+         vars:
+            ### ANSIBLE VARS ###
+            # ansible_host                         : __MUTST_BE_DEFINED_AT_HOST_LEVEL__
+            ansible_user                           : administrator
+            ansible_password                       : !vault |
+                                                $ANSIBLE_VAULT;1.1;AES256
+                                                35353837316164653762633535646462336339323934623233323136363237373962363533313863
+                                                6662313762343761643663333137616663663436643435310a313938646265373130626633353764
+                                                63373535336362636532636463343466636136616132383035626362396264626132626635383038
+                                                6438653535636432620a363739326162656230326136363664313331653061393261313735326532
+                                                6462
+            ansible_port                           : 5986
+            ansible_connection                     : winrm
+            ansible_winrm_server_cert_validation   : ignore
+            ### ARTIFACTS  ###                     :
+            artifact_java_version                  : jre-8u91-windows-i586.exe
+            ### SYS TOKENS ###
+            sys_domain_name                        : rentalcar.es
+            sys_domain_admin                       : admin.isoteras
+            sys_timezone                           : Romance Standard Time
+            # sys_hostname                         : __MUTST_BE_DEFINED_AT_HOST_LEVEL__
+            # sys_username                         : __MUTST_BE_DEFINED_AT_HOST_LEVEL__
+            
+            ### APP TOKENS ###
+            # app_country           : __MUTST_BE_DEFINED_AT_OFFICE_LEVEL__
+            # app_office            : __MUTST_BE_DEFINED_AT_OFFICE_LEVEL__
+            # app_parking_dispenser : __MUTST_BE_DEFINED_AT_OFFICE_OR_HOST_LEVEL__
+            # app_kiosk             : __MUTST_BE_DEFINED_AT_HOST_LEVEL__
+            app_chute_active        : true
+            app_backend_url         : http://KIOSKSRV01.rentalcar.es:10102
+            minero_server           : gpprobeservice.rentalcar.es:514
+            rentalcar_security_enabled: false
+            ### JASYPT KEY ###
+            app_jasypt_var       : JASYPT_MASTER_PASS
+            app_jasypt_key       : !vault |
+                              $ANSIBLE_VAULT;1.1;AES256
+                              61356633303166656661373238353665353037353365393838666230653663663230316563323531
+                              6339323333393762623861656164393166346234306234300a666536616363376637653861646562
+                              33303765353334346436326131653235323238303738323364313663653563633138313661303230
+                              3732323230363231620a383034663333343961643537613261353934306663633664346364646236
+                              6436
+            app_jasypt_secret    : !vault |
+                              $ANSIBLE_VAULT;1.1;AES256
+                              31356365313164353536343562653932313065366262356666643639643934353663346436373834
+                              3264343036643637626135623133393961643862316539350a303034643362326534393862616663
+                              64326533623335663564656333306137323931643839663036376337653434376436363066633836
+                              3663666263343935650a646339646533643136666663383038303530343438323461373862616161
+                              38333732393336613930386364623437666435353631313066376630313266663332363136306265
+                              6263646163373635343966393435383032643639613632626231
+         children:
+            # CENTRAL
+            kiosk_cen:
+               vars:
+                  app_country             : ES
+                  app_office              : ALC
+                  app_parking_dispenser   : true
+                  app_jasypt_key          : 123456
+                  app_jasypt_secret       : 'fO55PNPYQCSbKo8v/msKELDYRsHNTcZk'
+                  sys_timezone            : GMT Standard Time
+               hosts:
+                  cen_kiosk1:
+                     ansible_host            : 10.0.20.20
+                     sys_hostname            : cen-kiosk1
+                     sys_username            : cenkiosk1
+                     app_kiosk               : 1
+                     app_backend_url         : http://10.0.12.130:28650
+                  cen_kiosk2:
+                     ansible_host            : 10.0.20.23
+                     sys_hostname            : cen-kiosk2
+                     sys_username            : cenkiosk2
+                     app_kiosk               : 2
+                     app_backend_url         : http://10.0.12.130:28650           
+                  cen_kiosk3:
+                     ansible_host            : 10.0.20.26
+                     sys_hostname            : cen-kiosk3
+                     sys_username            : cenkiosk3
+                     app_kiosk               : 3
+                     app_backend_url         : http://10.0.12.130:28650
+            # OFFICES
+            kiosk_ace:
+               vars:
+                  app_country             : ES
+                  app_office              : ACE                                
+                  app_parking_dispenser   : false
+                  sys_timezone            : GMT Standard Time
+               hosts:
+                  ace_kiosk1:
+                     ansible_host            : 10.128.30.115
+                     sys_hostname            : ace-kiosk1
+                     sys_username            : acekiosk1
+                     app_kiosk               : 1
+            kiosk_agp:
+               vars:
+                  app_country             : ES
+                  app_office              : AGP                               
+                  app_parking_dispenser   : false
+               hosts:
+                  agp_kiosk1:
+                     ansible_host            : 10.128.5.117
+                     sys_hostname            : agp-kiosk1
+                     sys_username            : agpkiosk1
+                     app_kiosk               : 1
+                  agp_kiosk2:
+                     ansible_host            : 10.128.5.115
+                     sys_hostname            : agp-kiosk2
+                     sys_username            : agpkiosk2
+                     app_kiosk               : 2       
+                  agp_kngmt3:
+                     ansible_host            : 10.128.5.121
+                     sys_hostname            : agp-kngmt3
+                     sys_username            : agpkiosk3
+                     app_kiosk               : 3
+                  agp_kngmt4:
+                     ansible_host            : 10.128.5.119
+                     sys_hostname            : agp-kngmt4
+                     sys_username            : agpkiosk4
+                     app_kiosk               : 4
+            kiosk_alc:
+               vars:
+                  app_country             : ES
+                  app_office              : ALC   
+                  app_parking_dispenser   : false
+               hosts:
+                  alc_kiosk1:
+                     ansible_host            : 10.192.4.115
+                     sys_hostname            : alc-kiosk1
+                     sys_username            : alckiosk1
+                     app_kiosk               : 1
+                  alc_kiosk2:
+                     ansible_host            : 10.192.4.116
+                     sys_hostname            : alc-kiosk2
+                     sys_username            : alckiosk2
+                     app_kiosk               : 2
+                  alc_kngmt1:
+                     ansible_host            : 10.128.176.115
+                     sys_hostname            : alc-kngmt1
+                     sys_username            : alckiosk3
+                     app_kiosk               : 3
+                  alc_kngmt2:
+                     app_backend_url         : http://KIOSKSRV01.rentalcar.es:10103
+                     ansible_host            : 10.128.176.117
+                     sys_hostname            : alc-kngmt2
+                     sys_username            : alckiosk4
+                     app_kiosk               : 4
+            kiosk_bcn:
+               vars:
+                  app_country             : ES
+                  app_office              : BCN
+                  app_parking_dispenser   : false
+               hosts:
+                  bcn_kiosk1:
+                     ansible_host            : 192.168.173.210
+                     sys_hostname            : bcn-kiosk1
+                     sys_username            : bcnkiosk1
+                     app_kiosk               : 1                  
+                  bcn_kiosk2:
+                     ansible_host            : 10.128.159.50
+                     sys_hostname            : bcn-kiosk2
+                     sys_username            : bcnkiosk2
+                     app_kiosk               : 2                   
+                  bcn_kngmt3:
+                     ansible_host            : 10.192.9.117
+                     sys_hostname            : bcn-kngmt3
+                     sys_username            : bcnkiosk3
+                     app_kiosk               : 3
+                  bcn_kngmt4:
+                     ansible_host            : 10.192.9.119
+                     sys_hostname            : bcn-kngmt4
+                     sys_username            : bcnkiosk4
+                     app_kiosk               : 4
+            kiosk_bct:
+               vars:
+                  app_country             : ES
+                  app_office              : BCT
+                  app_parking_dispenser   : false
+               hosts:
+                  bct_kngmt1:
+                     ansible_host            : 192.168.221.115
+                     sys_hostname            : bct-kngmt1
+                     sys_username            : bctkisok1
+                     app_kiosk               : 1
+            kiosk_blq:
+               vars:
+                  app_country             : IT
+                  app_office              : BLQ                                
+                  app_parking_dispenser   : false
+               hosts:
+                  blq_kiosk1:
+                     ansible_host            : 10.128.21.115
+                     sys_hostname            : blq-kiosk1
+                     sys_username            : blqkiosk1
+                     app_kiosk               : 1
+            kiosk_bod:
+               vars:
+                  app_country             : FR
+                  app_office              : BOD                              
+                  app_parking_dispenser   : false
+               hosts:
+                  bod_kiosk1:
+                     ansible_host            : 10.128.18.115
+                     sys_hostname            : bod-kiosk1
+                     sys_username            : bodkiosk1
+                     app_kiosk               : 1
+            kiosk_bg5:
+               vars:
+                  app_country             : IT
+                  app_office              : BGY
+                  app_parking_dispenser   : false                     
+               hosts:
+                  bg5_kngmt1:
+                     ansible_host            : 10.192.179.115
+                     sys_hostname            : bg5-kngmt1
+                     sys_username            : bg5kiosk1
+                     app_kiosk               : 1
+                     rentalcar_security_enabled: true
+                  bg5_kngmt2: 
+                     ansible_host            : 10.192.179.118
+                     sys_hostname            : bg5-kngmt2
+                     sys_username            : bgykiosk2
+                     app_kiosk               : 2
+            kiosk_cdg:
+               vars:
+                  app_country             : FR
+                  app_office              : CDG
+                  app_parking_dispenser   : false  
+               hosts:
+                  cdg_kngmt1:
+                     ansible_host            : 10.192.65.115
+                     sys_hostname            : cdg-kngmt1
+                     sys_username            : cdgkiosk1
+                     app_kiosk               : 1
+            kiosk_cta:
+               vars:
+                  app_country             : IT
+                  app_office              : CTA                                
+                  app_parking_dispenser   : false
+               hosts:
+                  cta_kiosk1:
+                     ansible_host            : 10.128.28.50
+                     sys_hostname            : cta-kiosk1
+                     sys_username            : ctakiosk1
+                     app_kiosk               : 1    
+            kiosk_fco:
+               vars:
+                  app_country             : IT
+                  app_office              : FCO     
+                  app_parking_dispenser   : false        
+               hosts:
+                  fco_kiosk1:
+                     ansible_host            : 192.168.251.115
+                     sys_hostname            : fco-kiosk1
+                     sys_username            : fcokiosk1
+                     app_kiosk               : 1
+                  fco_kngmt2:
+                     ansible_host            : 192.168.251.117
+                     sys_hostname            : fco-kngmt2
+                     sys_username            : fcokiosk2
+                     app_kiosk               : 2
+                  fco_kngmt3:
+                     ansible_host            : 192.168.251.119
+                     sys_hostname            : fco-kiosk3
+                     sys_username            : fcokiosk3
+                     app_kiosk               : 3
+            kiosk_ibz :
+               vars:
+                  app_country             : ES
+                  app_office              : IBZ                               
+                  app_parking_dispenser   : false     
+               hosts:
+                  ibz_kiosk1:
+                     ansible_host            : 192.168.253.115
+                     sys_hostname            : ibz-kiosk1
+                     sys_username            : ibzkiosk1
+                     app_kiosk               : 1                         
+            kiosk_lgw:
+               vars:
+                  app_country             : EN
+                  app_office              : LGW   
+                  app_parking_dispenser   : false            
+                  sys_timezone            : GMT Standard Time         
+               hosts:
+                  lgw_kngmt1:
+                     ansible_host            : 10.192.56.115
+                     sys_hostname            : lgw-kngmt1
+                     sys_username            : lgwkiosk1
+                     app_kiosk               : 1
+                  lgw_kngmt2:
+                     ansible_host            : 10.192.56.117
+                     sys_hostname            : lgw-kngmt2
+                     sys_username            : lgwkiosk2
+                     app_kiosk               : 2
+            kiosk_lhr:
+               vars:
+                  app_country             : EN
+                  app_office              : LHR  
+                  app_parking_dispenser   : false            
+                  sys_timezone            : GMT Standard Time         
+               hosts:
+                  lhr_kngmt1:
+                     ansible_host            : 10.192.53.117
+                     sys_hostname            : lhr-kngmt1
+                     sys_username            : lhrkiosk2
+                     app_kiosk               : 1
+                  lhr_kngmt2:
+                     ansible_host            : 10.192.53.115
+                     sys_hostname            : lhr-kngmt2
+                     sys_username            : lhrkiosk1
+                     app_kiosk               : 2
+            kiosk_lpa :
+               vars:
+                  app_country             : ES
+                  app_office              : LPA                             
+                  app_parking_dispenser   : false
+                  sys_timezone            : GMT Standard Time
+               hosts:
+                  lpa_kiosk1:
+                     ansible_host            : 192.168.60.115
+                     sys_hostname            : lpa-kiosk1
+                     sys_username            : lpakiosk1
+                     app_kiosk               : 1                         
+            kiosk_mad:
+               vars:
+                  app_country             : ES
+                  app_office              : MAD
+                  app_parking_dispenser   : false    
+               hosts:
+                  mad_kiosk1:
+                     ansible_host            : 10.128.126.115
+                     sys_hostname            : mad-kiosk1
+                     sys_username            : madkiosk1
+                     app_kiosk               : 1       
+                  mad_kiosk2:
+                     ansible_host            : 10.128.128.115
+                     sys_hostname            : mad-kiosk2
+                     sys_username            : madkiosk2
+                     app_kiosk               : 2          
+                  mad_kngmt3:
+                     ansible_host            : 10.128.126.117
+                     sys_hostname            : mad-kngmt3
+                     sys_username            : madkiosk3
+                     app_kiosk               : 3
+                  # mad_kngmt4:
+                  #   ansible_host            : 10.128.126.119
+                  #   sys_hostname            : mad-kngmt4
+                  #   sys_username            : madkiosk4
+                  #   app_kiosk               : 4
+            kiosk_gro:
+               vars:
+                  app_country             : ES
+                  app_office              : GRO                               
+                  app_parking_dispenser   :  false    
+               hosts:
+                  gro_kiosk1:
+                     ansible_host            : 10.128.16.115
+                     sys_hostname            : gro-kiosk1
+                     sys_username            : grokiosk1
+                     app_kiosk               : 1    
+            kiosk_rmu:
+               vars:
+                  app_country             : ES
+                  app_office              : RMU                            
+                  app_parking_dispenser   : false     
+               hosts:
+                  rmu_kiosk1:
+                     ansible_host            : 10.128.134.115
+                     sys_hostname            : rmu-kiosk1
+                     sys_username            : rmukiosk1
+                     app_kiosk               : 1    
+            kiosk_mxp:
+               vars:
+                  app_country             : IT
+                  app_office              : MXP                               
+                  app_parking_dispenser   : false     
+               hosts:
+                  mxp_kiosk1:
+                     ansible_host            : 10.128.155.115
+                     sys_hostname            : mxp-kiosk1
+                     sys_username            : mxpkiosk1
+                     app_kiosk               : 1                         
+                  mxp_kngmt1:
+                     ansible_host            : 10.128.160.115
+                     sys_hostname            : mxp-kngmt1
+                     sys_username            : mxpkiosk2
+                     app_kiosk               : 2
+                          
+            kiosk_nce:
+               vars:
+                  app_country             : FR
+                  app_office              : NCE
+                  app_parking_dispenser   : false  
+               hosts:            
+                  nce_kiosk1:
+                     ansible_host            : 10.128.44.115
+                     sys_hostname            : nce-kiosk1
+                     sys_username            : ncekiosk1
+                     app_kiosk               : 1
+            kiosk_pmi:
+               vars:
+                  app_country             : ES
+                  app_office              : PMI
+                  app_parking_dispenser   : false
+               hosts:
+                  pmi_kiosk1:
+                     ansible_host            : 10.192.3.115
+                     sys_hostname            : pmi-kiosk1
+                     sys_username            : pmikiosk1
+                     app_kiosk               : 1
+                  pmi_kiosk2:
+                     ansible_host            : 10.192.3.116
+                     sys_hostname            : pmi-kiosk2
+                     sys_username            : pmikiosk2
+                     app_kiosk               : 2
+                  pmi_kngmt3:
+                     ansible_host            : 192.168.36.117
+                     sys_hostname            : pmi-kngmt3
+                     sys_username            : pmikiosk4
+                     app_kiosk               : 3
+                  pmi_kngmt4:
+                     app_backend_url         : http://KIOSKSRV01.rentalcar.es:10103
+                     ansible_host            : 192.168.36.115
+                     sys_hostname            : pmi-kngmt4
+                     sys_username            : pmikiosk3
+                     app_kiosk               : 4
+            kiosk_pmo :
+               vars:
+                  app_country             : IT
+                  app_office              : PMO                                
+                  app_parking_dispenser   : false     
+               hosts:
+                  pmo_kiosk1:
+                     ansible_host            : 192.168.138.115
+                     sys_hostname            : pmo-kiosk1
+                     sys_username            : pmokiosk1
+                     app_kiosk               : 1     
+            kiosk_psa :
+               vars:
+                  app_country             : IT
+                  app_office              : PSA                               
+                  app_parking_dispenser   : false     
+               hosts:
+                  psa_kiosk1:
+                     ansible_host            : 10.128.143.115
+                     sys_hostname            : psa-kiosk1
+                     sys_username            : psakiosk1
+                     app_kiosk               : 1        
+            kiosk_svq :
+               vars:
+                  app_country             : ES
+                  app_office              : SVQ                                  
+                  app_parking_dispenser   : false     
+               hosts:
+                  svq_kiosk1:
+                     ansible_host            : 192.168.29.115
+                     sys_hostname            : svq-kiosk1
+                     sys_username            : svqkiosk1
+                     app_kiosk               : 1    
+            kiosk_tfs :
+               vars:
+                  app_country             : ES
+                  app_office              : TFS                                 
+                  app_parking_dispenser   : false     
+                  sys_timezone            : GMT Standard Time
+               hosts:
+                  tfs_kiosk1:
+                     ansible_host            : 192.168.70.115
+                     sys_hostname            : tfs-kiosk1
+                     sys_username            : tfskiosk1
+                     app_kiosk               : 1    
+            kiosk_vlc :
+               vars:
+                  app_country             : ES
+                  app_office              : VLC
+                  app_parking_dispenser   :  true    
+               hosts:
+                  vlc_kiosk1:
+                     ansible_host            : 192.168.40.115
+                     sys_hostname            : vlc-kiosk1
+                     sys_username            : vlckiosk1
+                     app_kiosk               : 1                                                                                                        
+            kiosk_tf5:
+               vars:
+                  app_country             : ES
+                  app_office              : TF5  
+                  app_parking_dispenser   : false            
+                  sys_timezone            : GMT Standard Time           
+               hosts:
+                  tf5_kngmt1:
+                     ansible_host            : 10.192.75.115
+                     sys_hostname            : tf5-kngmt1
+                     sys_username            : tf5kiosk1
+                     app_kiosk               : 1
+                  tf5_kngmt2:
+                     ansible_host            : 10.192.75.117
+                     sys_hostname            : tf5-kngmt2
+                     sys_username            : tf5kiosk2
+                     app_kiosk               : 2
+            kiosk_tls:
+               vars:
+                  app_country             : FR
+                  app_office              : TLS    
+                  app_parking_dispenser   : false                       
+               hosts:
+                  tls_kngmt1:
+                     ansible_host            : 10.192.162.115
+                     sys_hostname            : tls-kngmt1
+                     sys_username            : tlskiosk1
+                     app_kiosk               : 1                     
+            ### PORTUGAL ###
+            kiosk_opo:
+               vars:
+                  app_country             : PT
+                  app_office              : OPO        
+                  app_parking_dispenser   : false            
+                  sys_timezone            : GMT Standard Time  
+               hosts:
+                  opo_kiosk1:
+                     ansible_host            : 192.168.141.213
+                     sys_hostname            : opo-kiosk1
+                     sys_username            : opokiosk1
+                     app_kiosk               : 1               
+            kiosk_op5:
+               vars:
+                  app_country             : PT
+                  app_office              : OP5         
+                  app_parking_dispenser   : false            
+                  sys_timezone            : GMT Standard Time                  
+               hosts:
+                  op5_kngmt1:
+                     ansible_host            : 10.128.52.115
+                     sys_hostname            : op5-kngmt1
+                     sys_username            : op5kiosk1
+                     app_kiosk               : 1
+                  op5_kngmt2:
+                     ansible_host            : 10.128.52.117
+                     sys_hostname            : op5-kngmt2
+                     sys_username            : op5kiosk2
+                     app_kiosk               : 2
+            kiosk_lis :
+               vars:
+                  app_country             : PT
+                  app_office              : LIS                                
+                  app_parking_dispenser   : false     
+                  sys_timezone            : GMT Standard Time
+               hosts:
+                  lis_kiosk1:
+                     ansible_host            : 10.128.22.116
+                     sys_hostname            : lis-kiosk1
+                     sys_username            : liskiosk1
+                     app_kiosk               : 1
+            kiosk_li5:
+               vars:
+                  app_country             : PT
+                  app_office              : LI5   
+                  app_parking_dispenser   : false            
+                  sys_timezone            : GMT Standard Time           
+               hosts:
+                  li5_kngmt1:
+                     ansible_host            : 10.192.51.115
+                     sys_hostname            : li5-kngmt1
+                     sys_username            : li5kiosk1
+                     app_kiosk               : 1
+                  li5_kngmt2:
+                     ansible_host            : 10.192.51.117
+                     sys_hostname            : li5-kngmt2
+                     sys_username            : li5kiosk2
+                     app_kiosk               : 2
+            kiosk_fao:
+               vars:
+                  app_country             : PT
+                  app_office              : FAO    
+                  app_parking_dispenser   : false            
+                  sys_timezone            : GMT Standard Time         
+               hosts:
+                  fao_kiosk1:
+                     ansible_host            : 10.192.8.115
+                     sys_hostname            : fao-kiosk1
+                     sys_username            : faokiosk1
+                     app_kiosk               : 1
+                  fao_kngmt2:
+                     ansible_host            : 10.192.69.115
+                     sys_hostname            : fao-kngmt2
+                     sys_username            : faokiosk2
+                     app_kiosk               : 2
+                  fao_kngmt3:
+                     ansible_host            : 10.192.69.117
+                     sys_hostname            : fao-kngmt3
+                     sys_username            : faokiosk3
+                     app_kiosk               : 3                     
+

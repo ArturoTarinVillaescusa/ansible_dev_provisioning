@@ -1,0 +1,15 @@
+---
+- name: Distribute base software
+  import_tasks: base_requeriments.yml
+
+- name: Prepare the system for the installation
+  import_tasks: prepare.yml
+  
+- name: Distribute required application software
+  import_tasks: distribute.yml
+
+- name: Deploy TAR
+  import_tasks: deploy.yml
+ 
+- name: Start TAR
+  import_tasks: start.yaml

@@ -1,0 +1,17 @@
+### SQUAD: CLICK AND GO ###
+## Connected Cars microservice variables
+
+mss_app_version: 3.0.0
+mss_app_user: "svc_app_mss_concars"
+mss_app_userpass: "{{ vault_mssconnectedcars_svc_pass }}"
+mss_scheduler_url: "http://localhost:9010/Scheduler"
+mss_app_artifact: MSSConnectedCars
+mss_db_server: LOCALHOST
+mss_db_name: BDSIGGERSARG2TEST
+mss_db_user: SIGGER
+mss_db_pass: "{{ vault_mssconnectedcars_db_pass }}"
+mss_port: 8082
+mss_java_artifact: jre-8u91-windows-i586.exe
+mss_app_auth_env: integ
+mss_connectedcars_third_host: http://localhost
+mss_connectedcars_third_port: 18001

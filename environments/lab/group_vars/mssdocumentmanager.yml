@@ -1,0 +1,15 @@
+### SQUAD: KEY AND GO ###                                            
+##                                                                   
+                                                                     
+mss_app_version: 1.0.0
+mss_app_user: "svc_app_mss_documan"
+mss_app_userpass: "{{ vault_mssdocumentmanager_svc_pass }}"
+mss_app_artifact: MSSDocumentManager
+mss_port: 8024
+mss_scheduler_url: "\"\""
+mss_java_artifact: jre-8u91-windows-i586.exe
+mss_aws_endpoint: http://10.0.12.35:9000    
+mss_aws_accesskey: "{{ vault_mssdocumentmanager_aws_accesskey }}"
+mss_aws_secret: "{{ vault_mssdocumentmanager_aws_secret }}"
+mss_aws_bucket: mybucket
+mss_maxfile: 10MB

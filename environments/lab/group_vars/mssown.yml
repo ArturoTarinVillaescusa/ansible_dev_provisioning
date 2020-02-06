@@ -1,0 +1,7 @@
+## COMMON APP VARS
+# APP       : NOVABASE OPERATIONS WEB NOTIFICATIONS
+# PREFIX    : mssown
+mssown_name        : MSSTEFOperationsWebNotifications
+mssown_base_path   : '{{ windows_mss_folder }}\{{ mssown_name }}'
+
+

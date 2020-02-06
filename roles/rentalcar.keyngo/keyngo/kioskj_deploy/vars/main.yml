@@ -1,0 +1,4 @@
+# keyngo_kioskj_version        [ REQUIRED ]    : Target version to be deployed for kioskj component
+# not set here in order to force playbook to fail if not provided
+
+

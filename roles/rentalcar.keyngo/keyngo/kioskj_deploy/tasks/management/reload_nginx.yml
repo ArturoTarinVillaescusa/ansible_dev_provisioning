@@ -1,0 +1,10 @@
+- name        : Reloading nginx configuration
+  block       :
+    - name          : Generating nginx config file without include {{ inventory_hostname }}
+      win_template  :
+        src           : 'templates/deploy/nginx.conf.j2'
+        dest          : '{{ keyngo_nginx_path }}\conf\nginx.conf'
+    - name          : Reload nging configuration
+      win_command   : nginx -s reload
+      args          :
+        chdir         : '{{ keyngo_nginx_path }}'

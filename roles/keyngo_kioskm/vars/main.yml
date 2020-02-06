@@ -1,0 +1,19 @@
+# Role vars.
+# kioskm_op [ REQUIRED ] : Operation to perform
+# values:
+# - setup               -> only setup the system
+# - distribute          -> setup + distribute required binaries
+# - deploy [default]    -> setup + deploy required binaries [ will distribute binaries if required ]
+# not set here in order to force playbook to fail if not provided
+
+# kioskm_devices        [ REQUIRED ]    : Target kioskm to apply the playbook
+# not set here in order to force playbook to fail if not provided
+
+# kioskm_version        [ REQUIRED ]    : Target version to be deployed
+# not set here in order to force playbook to fail if not provided
+
+# kioskm_reboot         [ REQUIRED ]    : Reboot system after deploy
+# values:
+# - true                -> reboot after deploy
+# - false               -> no reboot after deploy
+# not set here in order to force playbook to fail if not provided

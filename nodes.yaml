@@ -1,0 +1,34 @@
+---
+nodes:
+  ubu18.rentalcar.local:
+    ":name": ubuntu
+    ":box": bento/ubuntu-18.04
+    ":ip": 192.168.15.7
+#    ports:
+#    - ":host": '16443'
+#      ":guest": '443'
+#    - ":host": '16080'
+#      ":guest": '80'
+    ":memory": 1024
+
+  ubu16.rentalcar.local:
+    ":name": ubuntu
+    ":box": bento/ubuntu-16.04
+    ":ip": 192.168.15.9
+#    ports:
+#    - ":host": '16443'
+#      ":guest": '443'
+#    - ":host": '16080'
+#      ":guest": '80'
+    ":memory": 1024
+                  
+  rhel.rentalcar.local:
+    ":name": rhel
+    ":box": bento/centos-7.3
+    ":ip": 192.168.15.8
+    ports:
+#    - ":host": '15443'
+#      ":guest": '443'
+#    - ":host": '15080'
+#      ":guest": '80'
+    ":memory": 1024

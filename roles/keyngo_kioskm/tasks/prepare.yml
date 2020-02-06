@@ -1,0 +1,48 @@
+## Middleware
+## Ensure all required middleware and 3º party software is present
+
+- name  : '>>> Configuring and Installing application requiriments'
+  block :
+  - name        : '>>>> CHECKING REQUIREMENTS ARE PRESENT'
+    debug       :
+       msg        : '{{ inventory_hostname }}'    
+  - name        : 'Ensure configured java version is Installed'
+    win_package:
+      path              : c:\RENTALCAR\requirements\{{ artifact_java_version }}
+      product_id        : '{26A24AE4-039D-4CA4-87B4-2F83218091F0}'
+      state             : present
+      arguments         :
+      - /s /L c:\java_setup.log
+  
+  - name        : 'Ensure minero probe service is up and running'
+    block       :
+    - name        : 'Check if service exists'
+      win_service :
+         name       : GPProbe32_Universal
+      register    : service_info
+    - name        : 'Debug service_info value'
+      debug       :
+         msg        : '{{ service_info }}'
+    - name        : 'Install service if required'
+      block       :
+      - name        : 'Ensure destination path is not present'
+        win_file    :
+           path         : C:\GPProbe32_Universal
+           state        : absent
+      - name        : 'Unzip probe src'
+        win_unzip   : 
+           src          : C:\RENTALCAR\requirements\GPProbe32_Universal.zip
+           dest         : C:\GPProbe32_Universal
+     
+      - name        : 'Create Service'
+        win_service     :
+           name                 : GPProbe32_Universal 
+           path                 : '"C:\GPProbe32_Universal\GPProbe.exe" --service  -g  "C:\GPProbe32_Universal\Conf\gpprobe.conf"  -l  error  -x  Log\GPProbe32_Universal.log  -r  5  -d  5  -name  "GPProbe32_Universal"'
+      when        : service_info['exists'] == false
+       
+    - name        : 'Ensure auto start mode and service started'
+      win_service :
+         name       : GPProbe32_Universal
+         start_mode : auto
+         state      : started
+

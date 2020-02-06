@@ -1,0 +1,79 @@
+rentalcar.tasks.endPoints=,/Commands,/Monitors,/bookingsTask,/confirmRentalAgreementTask,/confirmRentalAgreementTask,/availabilityTask,/createStatusTask,/createHealthCheckTask,/getHealthCheckTask,/createTransactionsTask,/createAlertTask,/employeeTask,/vehicleTask,/businessUnitTask,/configurationTask
+rentalcar.tasks.nameMethods=UrlBase,Commands,Monitors,bookingsTask,confirmRentalAgreementTask,confirmRentalAgreementTask,availabilityTask,createStatusTask,createHealthCheckTask,getHealthCheckTask,createTransactionsTask,createAlertTask,employeeTask,vehicleTask,businessUnitTask,configurationTask
+rentalcar.uris.endPoints=
+rentalcar.uris.nameMethods=
+rentalcar.errors.codes=
+rentalcar.errors.descriptions=
+rentalcar.daemon=1
+rentalcar.daemon.version={{ keyngo_kioskj_version }}
+# ----------------------------------------------------------------------------------------
+# THE FOLLOWING PROPERTIES ARE NOT NEEDED FOR ALL PROJECTS, ONLY FOR THE ONES WITH ACCESS
+# TO THE DATABASE, PLEASE REMOVE THESE LINES IF THE SERVICE DO NOT REQUIRE THEM
+# ----------------------------------------------------------------------------------------
+# Encryption password, must be set as system environment variable.
+# If no env variable defined, use default (testing purposes)
+jasypt.encryptor.password=123456
+
+# ENVIRONMENT VARIABLES
+# =====================
+DBSERVER = {{ keyngo_kioskj_db_host }}
+DBNAME = {{ keyngo_kioskj_db_name }}
+DBUSER = {{ keyngo_kioskj_db_user }}
+DBPASSWORD = ENC({{ keyngo_kioskj_db_jasypt_password }})
+
+# DATA SOURCE SETTINGS
+# ===============================
+spring.datasource.url=jdbc:sqlserver://${DBSERVER};databaseName=${DBNAME};
+spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+spring.datasource.username=${DBUSER}
+spring.datasource.password=${DBPASSWORD}
+
+# JPA / HIBERNATE
+# ===============================
+# Show or not log for each sql query
+spring.jpa.show-sql=false
+
+# Naming strategy
+spring.jpa.hibernate.naming-strategy=org.hibernate.cfg.DefaultNamingStrategy
+spring.jpa.hibernate.naming.implicit-strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+# Allows Hibernate to generate SQL optimized for a particular DBMS
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.SQLServer2012Dialect
+
+# Kiosk Properties all
+# ===============================
+tiempoReservaAnteriorEnMinutos = {{ keyngo_kioskj_app_tiempo_reserva_anterior_en_minutos }}
+tiempoReservaPosteriorEnMinutos = {{ keyngo_kioskj_app_tiempo_reserva_posterior_en_minutos }}
+horaInicioReservas = {{ keyngo_kioskj_app_hora_inicio_reservas }}
+horaFinReservas = {{ keyngo_kioskj_app_hora_fin_reservas }}
+kioskDurl={{ keyngo_kioskj_app_kioskd_url }}
+idValidationUrl={{ keyngo_kioskj_app_id_validation_url }}
+httpClientReadTimeout={{ keyngo_kioskj_app_http_client_read_timeout }}
+
+# Graphite Metrics
+# ===============================
+metrics.graphite.enabled={{ keyngo_kioskj_app_metrics_graphite_enabled }}
+metrics.graphite.hostname={{ keyngo_kioskj_app_metrics_graphite_hostname }}
+metrics.graphite.port={{ keyngo_kioskj_app_metrics_graphite_port }}
+metrics.graphite.prefix={{ keyngo_kioskj_app_metrics_graphite_prefix }}
+metrics.graphite.time.between.polls={{ keyngo_kioskj_app_metrics_graphite_time_between_polls }}
+metrics.graphite.microservice.name={{ keyngo_kioskj_app_metrics_graphite_microservice_name }}
+
+# Login Configuration
+# ===============================
+logging.level.root=ERROR
+logging.level.com.rentalcar.kiosk=INFO
+logging.file=logs/kiosk.log
+logging.file.max-size=5MB
+logging.file.max-history=30
+logging.pattern.file=%d{dd/MM/yyyy HH:mm:ss.SSS} %-5level %logger{20} [%mdc{resource}]%mdc{parameters} - %msg%n
+logging.pattern.console=%d{dd/MM/yyyy HH:mm:ss.SSS} %-5level %logger{20} [%mdc{resource}]%mdc{parameters} - %msg%n
+
+# Authorization
+# ===============================
+authorization.clientSecret={{ keyngo_kioskj_app_authorization_client_secret }}
+authorization.clientId={{ keyngo_kioskj_app_authorization_clientId }}
+authorization.token.validity.seconds={{ keyngo_kioskj_app_authorization_token_validity_seconds }}
+rentalcar.security.enabled={{ keyngo_kioskj_app_rentalcar_security_enabled }}
+broker.codes.without.preauthorizacion.required={{ keyngo_kioskj_app_broker_codes_without_preauthorizacion_required }}
+fuel.deposit.preauthorization.enabled={{ keyngo_kioskj_app_fuel_deposit_preauthorization_enabled }}

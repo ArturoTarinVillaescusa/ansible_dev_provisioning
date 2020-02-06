@@ -1,0 +1,77 @@
+# Maintained by Ansible
+{% include './includes/base_connect-distributed.properties.j2' %}
+
+sasl.mechanism=GSSAPI
+sasl.kerberos.service.name=kafka
+security.protocol=SASL_PLAINTEXT
+
+#SASL additions
+producer.confluent.monitoring.interceptor.sasl.mechanism=GSSAPI
+producer.confluent.monitoring.interceptor.security.protocol=SASL_PLAINTEXT
+producer.confluent.monitoring.interceptor.sasl.kerberos.service.name=kafka
+producer.confluent.monitoring.interceptor.sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+   useKeyTab=true \
+   storeKey=true \
+   keyTab="{{kerberos.keytab_dir}}/cp-connect-{{inventory_hostname}}.keytab" \
+   principal="cp-connect/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+
+consumer.confluent.monitoring.interceptor.sasl.mechanism=GSSAPI
+consumer.confluent.monitoring.interceptor.security.protocol=SASL_PLAINTEXT
+consumer.confluent.monitoring.interceptor.sasl.kerberos.service.name=kafka
+consumer.confluent.monitoring.interceptor.sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+   useKeyTab=true \
+   storeKey=true \
+   keyTab="{{kerberos.keytab_dir}}/cp-connect-{{inventory_hostname}}.keytab" \
+   principal="cp-connect/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+
+
+sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+   useKeyTab=true \
+   storeKey=true \
+   keyTab="{{kerberos.keytab_dir}}/cp-connect-{{inventory_hostname}}.keytab" \
+   principal="cp-connect/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+
+#SSL additions
+ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+ssl.truststore.password={{ kerberos.storepass_secret }}
+ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+ssl.keystore.password={{ kerberos.keypass_secret }}
+ssl.key.password={{ host_keystore_storepass }}
+producer.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+producer.ssl.truststore.password={{ kerberos.storepass_secret }}
+producer.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+producer.ssl.keystore.password={{ kerberos.keypass_secret }}
+producer.ssl.key.password={{ host_keystore_storepass }}
+producer.security.protocol=SASL_PLAINTEXT
+consumer.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+consumer.ssl.truststore.password={{ kerberos.storepass_secret }}
+producer.sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+   useKeyTab=true \
+   storeKey=true \
+   keyTab="{{kerberos.keytab_dir}}/cp-connect-{{inventory_hostname}}.keytab" \
+   principal="cp-connect/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+producer.sasl.mechanism=GSSAPI
+producer.sasl.kerberos.service.name=kafka
+consumer.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+consumer.ssl.keystore.password={{ kerberos.keypass_secret }}
+consumer.ssl.key.password={{ host_keystore_storepass }}
+consumer.security.protocol=SASL_PLAINTEXT
+consumer.sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+   useKeyTab=true \
+   storeKey=true \
+   keyTab="{{kerberos.keytab_dir}}/cp-connect-{{inventory_hostname}}.keytab" \
+   principal="cp-connect/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+consumer.sasl.mechanism=GSSAPI
+consumer.sasl.kerberos.service.name=kafka
+producer.confluent.monitoring.interceptor.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+producer.confluent.monitoring.interceptor.ssl.truststore.password={{ kerberos.storepass_secret }}
+producer.confluent.monitoring.interceptor.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+producer.confluent.monitoring.interceptor.ssl.keystore.password={{ kerberos.keypass_secret }}
+producer.confluent.monitoring.interceptor.ssl.key.password={{ host_keystore_storepass }}
+producer.confluent.monitoring.interceptor.security.protocol=SASL_PLAINTEXT
+consumer.confluent.monitoring.interceptor.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+consumer.confluent.monitoring.interceptor.ssl.truststore.password={{ kerberos.storepass_secret }}
+consumer.confluent.monitoring.interceptor.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+consumer.confluent.monitoring.interceptor.ssl.keystore.password={{ kerberos.keypass_secret }}
+consumer.confluent.monitoring.interceptor.ssl.key.password={{ host_keystore_storepass }}
+consumer.confluent.monitoring.interceptor.security.protocol=SASL_PLAINTEXT

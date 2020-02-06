@@ -1,0 +1,74 @@
+### ANSIBLE ###
+
+ansible_port : 5986
+ansible_connection : winrm
+ansible_winrm_server_cert_validation: ignore
+ansible_winrm_transport: kerberos
+
+#### GLOBAL ###
+software_requeriments_folder: "c:\\RENTALCAR\\Requeriments"
+nexus_url: "https://nexus.rentalcar.es"
+windows_temp_folder: "C:\\Windows\\Temp"
+windows_domain: "RENTALCAR"
+sigger_db_host: "SIGGERSERVER"
+sigger_db_name: "BDSIGGER"
+
+## SAR GLOBAL ##
+sar_service_user: "daemons_svc"
+sar_bridge_server1: "ALCSARBRIDGE01"
+sar_bridge_server2: "ALCSARBRIDGE02"
+
+### SAR CHECKER ###
+sar_checker_folder: "C:\\Daemons\\CHECKER"
+sar_checker_artifact_name: "CheckerDaemons.exe"
+sar_checker_ini: "CheckerDaemons.ini"
+sar_checker_service_user_password: "{{ vault_sar_service_user_password }}"
+
+#### SAR SIS ###
+sar_sis_service_user: "{{ sar_service_user }}"
+sar_sis_service_user_password: "{{ vault_sar_service_user_password }}"
+sar_sis_service_port: "9002"
+sar_sis_db_name: "BDSARSIS"
+sar_sis_dbsis_name: "BDSIGGERSIS"
+sar_sis_artifact_name: "SARSISDWebServer.exe"
+sar_sis_properties_file: "SARSISDWebServer.ini"
+sar_sis_db_ini: "SIGGER.ini"
+sar_sis_data_ini: "PrecargasDaos.ini"
+sar_sis_nexus_url: "https://nexus.rentalcar.es/repository/SAR/"
+sar_sis_installation_folder: "c:\\SARSISD"
+sar_sis_backup_folder: "c:\\SARSISD\\BACKUP"
+sar_sis_certs_folder: "c:\\SARSISD\\certificados"
+sar_sis_logs_folder: "c:\\SARSISD\\Logs"
+sar_sis_esquemas_folder: "c:\\SARSISD\\Esquemas_Privados"
+sar_sis_launch_file: "SIS.bat"
+sar_sis_log_server: "MADSARMNG01"
+sar_sis_redis_pass: "{{ vault_sar_sis_redis_pass }}"
+sar_sis_bat_args: "/node 1 /affinity 1FFF"
+
+## SAR CDV ###
+sar_cdv_service_user: "{{ sar_service_user }}"
+sar_cdv_service_user_password: "{{ vault_sar_service_user_password }}"
+sar_cdv_service_port: "9003"
+sar_cdv_db_name: "BDSIGGERCDV"
+sar_cdv_artifact_name: "CDVSID.exe"
+sar_cdv_properties_file: "CDVSID.ini"
+sar_cdv_data_ini: "PrecargasDaos.ini"
+sar_cdv_nexus_url: "https://nexus.rentalcar.es/repository/SAR/"
+sar_cdv_installation_folder: "c:\\DAEMONS\\CDVSID"
+sar_cdv_launch_file: "CDV.bat"
+sar_cdv_log_server: "MADSARMNG01"
+sar_cdv_bat_args: "/node 0 /affinity 1FFF"
+
+### SAR TAR ###
+sar_tar_service_user: "{{ sar_service_user }}"
+sar_tar_service_user_password: "{{ vault_sar_service_user_password }}"
+sar_tar_service_port: "9004"
+sar_tar_db_name: "BDSIGGERTarifas"
+sar_tar_artifact_name: "TARSID.exe"
+sar_tar_properties_file: "TARSID.ini"
+sar_tar_data_ini: "PrecargasDaos.ini"
+sar_tar_nexus_url: "https://nexus.rentalcar.es/repository/SAR/"
+sar_tar_installation_folder: "c:\\DAEMONS\\TARSID"
+sar_tar_launch_file: "TAR.bat"
+sar_tar_log_server: "MADSARMNG01"
+sar_tar_bat_args: "/node 1 /affinity 1FFF"

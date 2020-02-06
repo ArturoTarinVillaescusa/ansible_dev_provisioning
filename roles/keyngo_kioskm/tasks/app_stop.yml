@@ -1,0 +1,14 @@
+# Stop application before deploy
+#
+
+- name  : '>>> Ensure App is stopped before deploy'
+  block :
+  - name        : '>>>> ENSURE APP/S ARE STOPPED BEFORE DEPLOY'
+    debug       :
+       msg        : '{{ inventory_hostname }}'
+
+  - name        : 'Ensure kiosk app is stopped'
+    script      : files/scripts/stop-kioskm.ps1 
+
+      
+

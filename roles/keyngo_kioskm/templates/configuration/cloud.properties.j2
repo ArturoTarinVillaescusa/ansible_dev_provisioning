@@ -1,0 +1,14 @@
+webservice.baseurl={{ app_backend_url }}
+# Encryption password, must be set as system environment variable.
+# If no env variable defined, use default (testing purposes)
+jasypt.encryptor.password=${JASYPT_MASTER_PASS}
+# ENVIRONMENT VARIABLES
+# =====================
+authorization.clientId=kioskM
+authorization.clientSecret=ENC({{ app_jasypt_secret }})
+authorization.grant.type=client_credentials
+rentalcar.security.enabled= {{ rentalcar_security_enabled }}
+httpClientConnectTimeout=20000
+httpClientReadTimeout=20000
+httpClientPaymentsConnectTimeout=0
+httpClientPaymentsReadTimeout=0

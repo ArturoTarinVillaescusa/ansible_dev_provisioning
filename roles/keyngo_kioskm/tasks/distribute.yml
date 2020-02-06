@@ -1,0 +1,82 @@
+## Distribute
+## Ensure the target version artifacts are present.
+
+- name  : '### DISTRIBUTE ### '
+  block :
+  - name        : '>>>> DISTRIBUTE REQUIRED BINARIES'
+    debug       :
+       msg        : '{{ inventory_hostname }}'  
+  - name        : 'Ensure Required Java version is present'
+    win_stat    : 
+       path             : c:\RENTALCAR\requirements\{{ artifact_java_version }}
+    register    : java_artifact
+
+
+  - name        : 'Transfer Java JDK if required'
+    block       :
+    - name      : 'Fetch binary from target host'
+      win_get_url :
+         url         : http://nexus.rentalcar.es/repository/tools/jre-8u91-windows-i586.exe
+         dest        : c:\RENTALCAR\requirements
+      when        : kioskm_fetch == 'yes'
+
+    - name        : 'Copy from local folder'
+      win_copy  :
+         src       : c:\RENTALCAR\requirements\nexus_artifacts\jre-8u91-windows-i586.exe
+         dest      : c:\RENTALCAR\requirements\
+         remote_src: yes
+      when        : kioskm_fetch == 'no'
+    when        : java_artifact['stat']['exists'] == false
+
+
+
+  - name        : 'Ensure Minero Probe is present'
+    win_stat    :
+       path             : c:\RENTALCAR\requirements\GPProbe32_Universal.zip
+    register    : minero_probe
+
+  - name        : 'Transfer Minero Probe if required'
+    block       :
+    - name      : 'Fetch binary from target host'
+      win_get_url :
+         url         : http://nexus.rentalcar.es/repository/Kiosk/GPProbe32_Universal.zip
+         dest        : c:\RENTALCAR\requirements\GPProbe32_Universal.zip
+      when        : kioskm_fetch == 'yes'
+    - name        : 'Send binary form Ansible server'
+      block       :
+      - name      : 'Download artifact to ansible server'
+        local_action : get_url url=http://nexus.rentalcar.es/repository/Kiosk/GPProbe32_Universal.zip dest=/tmp/GPProbe32_Universal.zip
+      - name      : 'Send artifact to target host'
+        win_copy  : 
+           src       : /tmp/GPProbe32_Universal.zip   
+           dest      : c:\RENTALCAR\requirements\GPProbe32_Universal.zip
+      when        : kioskm_fetch == 'no'   
+    when        : minero_probe['stat']['exists'] == false
+
+  - name        : 'Distribute version if required'
+    block       :
+    - name        : 'Ensure APP Artifact is present'
+      win_stat    :
+         path     : c:\RENTALCAR\kiosk_{{ kioskm_version }}\app_src.zip
+      register    : app_artifact
+    - name        : 'Download App artifact if required'
+      block       :
+      - name        : 'Ensure New version path is present'
+        win_file    :
+           path             : c:\RENTALCAR\kiosk_{{ kioskm_version }}
+           state            : directory
+      - name        : 'Fetch Application Version Artifact from target host'
+        win_get_url :
+           url              : http://desreposrv.rentalcar.es:10081/repository/Kiosk/KioskM-{{ kioskm_version }}.zip
+           dest             : c:\RENTALCAR\kiosk_{{ kioskm_version }}\app_src.zip
+        when        : kioskm_fetch == 'yes'
+
+      - name        : 'Copy from local folder'
+        win_copy    :
+         src          : c:\RENTALCAR\requirements\nexus_artifacts\KioskM-{{ kioskm_version }}.zip
+         dest         : c:\RENTALCAR\kiosk_{{ kioskm_version }}\app_src.zip
+         remote_src   : yes
+        when        : kioskm_fetch == 'no'
+      when        : app_artifact['stat']['exists'] == false
+    when        : kioskm_version is defined
+    

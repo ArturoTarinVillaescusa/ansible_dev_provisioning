@@ -1,0 +1,12 @@
+---
+
+- name: Ensure SIS app is stopped
+  script: files/scripts/stop_SIS.ps1
+
+- name: Add REDIS ENV VAR
+  win_environment:
+     state: present
+     name: REDIS_MASTER_PASS
+     value: "{{ sar_sis_redis_pass  }}"
+     level: machine
+                          

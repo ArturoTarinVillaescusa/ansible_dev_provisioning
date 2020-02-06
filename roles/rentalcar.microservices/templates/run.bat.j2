@@ -1,0 +1,1 @@
+java -jar -Dlogging.file={{ windows_mss_folder }}\{{ mss_name }}\logs\{{ mss_app_artifact }}.log -Dfile.encoding=UTF-8 {{ mss_app_artifact }}-{{ mss_app_version }}.jar "{{ mss_app_artifact }}" 11 {{ mss_port }} "localhost" {{ mss_scheduler_url }}

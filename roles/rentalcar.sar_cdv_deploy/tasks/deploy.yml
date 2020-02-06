@@ -1,0 +1,43 @@
+---
+
+- name: Unzip artifact
+  win_command:  "\"C:\\Program Files\\7-Zip\\7z.exe\" x {{ sar_cdv_installation_folder }}\\{{ sar_cdv_artifact_name }}-{{ sar_cdv_version }}.7z -o{{ sar_cdv_installation_folder }} -aoa"
+  args:
+    chdir: "{{ sar_cdv_installation_folder }}"
+
+- name: Generating {{ sar_cdv_properties_file }} file
+  win_template:
+    src: "templates/{{ sar_cdv_properties_file }}.j2"
+    dest: "{{ sar_cdv_installation_folder }}\\{{ sar_cdv_properties_file }}"
+
+#TODO: verificar con desarrollo
+- name: Generating {{ sar_cdv_data_ini }} file
+  win_template:
+    src: files/app/ini/{{ sar_cdv_data_ini }}
+    dest: "{{ sar_cdv_installation_folder }}\\{{ sar_cdv_data_ini }}"
+
+- name: Generating {{ sar_cdv_launch_file }} file
+  win_template:
+    src: "templates/{{ sar_cdv_launch_file }}.j2"
+    dest: "{{ sar_cdv_installation_folder }}\\{{ sar_cdv_launch_file }}"
+
+- name: Removing artifact file - {{ sar_cdv_artifact_name }}-{{ sar_cdv_version }}.7z
+  win_file:
+    path: "{{ sar_cdv_installation_folder }}\\{{ sar_cdv_artifact_name }}-{{ sar_cdv_version }}.7z"
+    state: absent
+
+- name: Allow rights to {{ sar_cdv_service_user }}
+  win_acl:
+    path: '{{ sar_cdv_installation_folder }}'
+    user: '{{ windows_domain }}\{{ sar_cdv_service_user }}'
+    rights: FullControl
+    type: allow
+    state: present
+    propagation: 'None'
+
+- name: Create an application shortcut on the desktop
+  win_shortcut:
+    src: "{{ sar_cdv_installation_folder }}\\{{ sar_cdv_launch_file }}"
+    dest: "C:\\Users\\{{ sar_cdv_service_user }}\\Desktop\\{{ sar_cdv_launch_file }}.lnk"
+    icon: "{{ sar_cdv_installation_folder }}\\{{ sar_cdv_artifact_name }},0"
+    directory: "{{ sar_cdv_installation_folder }}"

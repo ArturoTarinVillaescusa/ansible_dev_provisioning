@@ -1,0 +1,10 @@
+## COMMON APP VARS
+# APP       : KEYNGO
+# PREFIX    : keyngo
+keyngo_name        : keyngo
+keyngo_base_path   : 'c:\rentalcar\{{ keyngo_name }}'
+
+
+# nginx local proxy
+keyngo_nginx_path   : 'c:\rentalcar\keyngo\nginx'
+

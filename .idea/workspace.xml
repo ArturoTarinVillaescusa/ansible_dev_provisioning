@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="dc0a88e6-8dee-4995-a015-3248bd089ec8" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/roles/rentalcar.kafka/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="193">
+                <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+              </first_editor>
+              <second_editor>
+                <markdownNavigatorState />
+              </second_editor>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>goldcar</find>
+      <find>mistral</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>rentalcar</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="y" value="-11" />
+    <option name="width" value="1366" />
+    <option name="height" value="779" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="AndroidView" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ansible_dev_provisioning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible_dev_provisioning" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible_dev_provisioning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible_dev_provisioning" type="462c0819:PsiDirectoryNode" />
+              <item name="environments" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible_dev_provisioning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible_dev_provisioning" type="462c0819:PsiDirectoryNode" />
+              <item name="environments" type="462c0819:PsiDirectoryNode" />
+              <item name="production" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible_dev_provisioning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible_dev_provisioning" type="462c0819:PsiDirectoryNode" />
+              <item name="files" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible_dev_provisioning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible_dev_provisioning" type="462c0819:PsiDirectoryNode" />
+              <item name="files" type="462c0819:PsiDirectoryNode" />
+              <item name="lab" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible_dev_provisioning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible_dev_provisioning" type="462c0819:PsiDirectoryNode" />
+              <item name="files" type="462c0819:PsiDirectoryNode" />
+              <item name="lab" type="462c0819:PsiDirectoryNode" />
+              <item name="kafka" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ansible_dev_provisioning" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ansible_dev_provisioning" type="462c0819:PsiDirectoryNode" />
+              <item name="roles" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <properties />
+      <listeners />
+    </configuration>
+  </component>
+  <component name="SbtLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$PROJECT_DIR$/../../../BIGDATA/LIGHTBEND_ACTIVATOR/akka-http-quickstart-scala" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../BIGDATA/LIGHTBEND_ACTIVATOR/akka-quickstart-scala" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../BIGDATA/LIGHTBEND_ACTIVATOR/alpakka" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../BIGDATA/UDEMY_JAVA_SCALA_AND_AKKA_MICROSERVICES_5.5H/Microservices_with_java_scala_and_akka" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../../KENMEI/IdeaProjects/call-traces" value="PREVIEW" />
+        <entry key="$PROJECT_DIR$/../../2018-08-13 OTD-129. PoC Reactive Microservices communication through Kafka topics using Alpakka/9781788298582-Code" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A/Users/Arturo/Documents/BIG DATA/VIDEOS/Microservices/PACKT_PUBLISHING_LEARNING_PATH_AKKA_BUILDING_APPLICATIONS_AND_MICROSERVICES_WITH_AKKA_TUTORIAL-OXBRiDGE/SalmaKhaterLearning_Akka" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/Functional-Programming-Design-In-Scala/keScala/Principles-of-Reactive-Programming-master/worksheets" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/FunctionalProgramDesignInScala_assignments/example" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/FunctionalProgrammingPrinciplesIn Scala/Functional-Programming-Principles-In-Scala/Week 1. Recursion" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/FunctionalProgrammingPrinciplesIn Scala/Functional-Programming-Principles-In-Scala/Week 2. Higher Order Functions" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/FunctionalProgrammingPrinciplesIn Scala/Functional-Programming-Principles-In-Scala/Week 3. Data and Abstraction" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/FunctionalProgrammingPrinciplesIn Scala/Functional-Programming-Principles-In-Scala/Week 4. Types and Patterns" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/FunctionalProgrammingPrinciplesIn Scala/Functional-Programming-Principles-In-Scala/Week 6. Collections" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/FunctionalProgrammingPrinciplesIn Scala/recfun" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/MyAssignments/forcomp" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/MyAssignments/funsets" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/MyAssignments/objsets" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/MyAssignments/patmat" value="PREVIEW" />
+        <entry key="/media/arturotarin/TI31407100A1/Users/Arturo/Documents/BIG DATA/VIDEOS/COURSERA/recfun" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dc0a88e6-8dee-4995-a015-3248bd089ec8" name="Default" comment="" />
+      <created>1580985308004</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580985308004</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="-4" width="1366" height="772" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Cargo" />
+      <window_info anchor="bottom" id="DB Execution Console" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="right" id="Maven Projects" />
+      <window_info id="Capture Tool" />
+      <window_info id="Designer" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info id="UI Designer" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" id="Idea Currency" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info id="DB Browser" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info id="Image Layers" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24963397" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/roles/rentalcar.kafka/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="193">
+            <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+          </first_editor>
+          <second_editor>
+            <markdownNavigatorState />
+          </second_editor>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>scala-sdk-2.12.5</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

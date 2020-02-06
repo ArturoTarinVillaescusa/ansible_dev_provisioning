@@ -1,0 +1,48 @@
+---
+
+- name: Install the kerberos packages
+  yum:
+    state: present
+    name: "{{ kerberos.redhat_packages }}"
+  when: ansible_os_family == "RedHat"
+
+
+- name: Install the kerberos packages
+  apt:
+    state: present
+    name: "{{ kerberos.ubuntu_packages }}"
+  when: ansible_os_family == "Debian"
+
+- name: Copy the client configuration file
+  template: src=krb5.conf.j2 dest=/etc/krb5.conf
+
+# - name: "copy Keytabs from ansible host {{ kerberos.keytab_source_dir }} to all hosts {{ kerberos.keytab_dir }}"
+#   synchronize:
+#     src: "{{ kerberos.keytab_source_dir }}"
+#     dest: "{{ kerberos.keytab_dir }}"
+#     mode: push
+#   ignore_errors: yes
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.truststore.jks to {{ kerberos.jks_store_folder }}/kafka.server.truststore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.truststore.jks"
+    dest: "{{ kerberos.jks_store_folder }}/kafka.server.truststore.jks"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.keystore.jks to {{ kerberos.jks_store_folder }}/kafka.server.keystore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.server.keystore.jks"
+    dest: "{{ kerberos.jks_store_folder }}kafka.server.keystore.jks"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.truststore.jks to {{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.truststore.jks"
+    dest: "{{ kerberos.jks_store_folder }}/kafka.client.truststore.jks"
+    mode: 0744
+
+- name: Copy ../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.keystore.jks to {{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+  copy:
+    src: "../files/certs/{{ kerberos.kdc_hostname }}{{ kerberos.jks_store_folder }}/kafka.client.keystore.jks"
+    dest: "{{ kerberos.jks_store_folder }}/kafka.client.keystore.jks"
+    mode: 0744

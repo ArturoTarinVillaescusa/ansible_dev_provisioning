@@ -1,0 +1,18 @@
+# Maintained by Ansible
+{% for key, value in zookeeper.properties.items() %}
+{{key}}={{value}}
+{% endfor %}
+{% for host in groups['zookeeper'] %}
+server.{{ hostvars[host]['zookeeper_id'] | default(groups.zookeeper.index(host) + 1)}}={{ host }}:2888:3888
+{% endfor %}
+
+##########################################################################
+# Securing Zookeeper: SASL / Kerberos authentication
+#
+authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+requireClientAuthScheme=sasl
+jaasLoginRenew=3600000
+
+# Securing Zookeeper: SASL / Kerberos authorization facility
+kerberos.removeHostFromPrincipal=true
+kerberos.removeRealmFromPrincipal=true

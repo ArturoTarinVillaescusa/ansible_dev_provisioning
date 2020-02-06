@@ -1,0 +1,9 @@
+---
+- name: Restart {{ mss_service }}
+  service: name={{ mss_service }} state=restarted
+
+- name: Start {{ mss_service }}
+  service: name={{ mss_service }} state=started
+
+- name: Stop {{ mss_service }}
+  service: name={{ mss_service }} state=stoped

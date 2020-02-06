@@ -1,0 +1,29 @@
+; SIGGER - Fichero INI - v5.00
+
+[Formato]
+VersionINI=5.00
+
+[Sucursal]
+CodigoSucursal=CEN
+
+[Parametros Cliente]
+ModoTerminalServer=0
+RutaImpresoraContratos=CONTRATOS
+RutaImpresoraListados=LISTADOS
+IdiomaAplicacion=ES
+IdiomaImpresosAplicacion=ES
+
+
+[Servidor Central]
+NombreServidorCentral={{ sigger_db_host }}
+
+[Servidor Secundario]
+NombreServidorSecundario= {{ sigger_db_host }}
+
+[Base Datos]
+NombreBaseDatos= {{ sigger_db_name  }}
+
+; ----------------------------------------------------------------
+
+[Control]
+CRC=C209351CD3A2DD3879CB29368CAB925D

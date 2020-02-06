@@ -1,0 +1,51 @@
+## Prepare
+## Deploy the new version to a temporal folder and apply the required templates
+
+- name  : '### PREPARE ### '
+  block :
+  - name        : '>>>> PREPARE DEPLOYMENT'
+    debug       :
+       msg            : 'deploying delivery in a temporal folder for {{ inventory_hostname }} in {{ ansible_hostname }}'
+
+  - name        : 'Unzip Artifact for version {{ mssown_mss_version }}'
+    win_unzip   :
+       src            : '{{ mssown_mss_artifact_path }}\{{ mssown_mss_artifact_name }}'
+       dest           : '{{ mssown_mss_artifact_path }}\temp'
+       delete_archive : yes
+  
+  - name        : 'Ensure deploy folder is present and clean'
+    block       :
+    - win_file    : 
+         path         : '{{ mssown_mss_artifact_path }}\delivery'
+         state        : absent
+    - win_file    : 
+         path         : '{{ mssown_mss_artifact_path }}\delivery'
+         state        : directory
+  
+  - name        : 'Copy Artifact jar from temp to delivery folder'
+    win_copy    :
+       remote_src     : yes
+       src            : '{{ mssown_mss_artifact_path }}\temp\{{ mssown_mss_artifact_jar }}'
+       dest           : '{{ mssown_mss_artifact_path }}\delivery\'
+  
+  - name          : 'Generating configuration files'
+    win_template  :
+        src          : templates/configuration/{{ item }}.j2
+        dest         : '{{ mssown_mss_artifact_path }}\delivery\{{ item }}'     
+    with_items:
+      - logback-spring.xml
+      - application.properties
+
+  - name          : 'Generating management scripts'
+    win_template  :
+        src          : 'templates/scripts/{{ item }}.j2'
+        dest         : '{{ mssown_mss_artifact_path }}\delivery\{{ item }}'     
+    with_items:
+      - launcher.bat
+      - start.bat
+      - stop.bat
+  - name        : 'Remove temporal delivery folder'
+    win_file    :
+       path           : '{{ mssown_mss_artifact_path }}\temp'
+       state          : absent
+    

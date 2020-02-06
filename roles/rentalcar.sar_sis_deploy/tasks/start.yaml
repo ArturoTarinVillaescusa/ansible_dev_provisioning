@@ -1,0 +1,48 @@
+---
+
+- name: "Get User urrent Session Id"
+  win_shell: |
+    $server = "localhost"
+    $users = @()
+    $quser = quser /server:$server 2>$null
+    if(!($quser)){
+        Continue
+    }
+    #Remove column headers
+    $quser = $quser[1..$($quser.Count)]
+    foreach($user in $quser){
+      $usersObj = [PSCustomObject]@{SessionId=$Null}
+      $quserData = $user -split "\s+"
+      if(($user | select-string "{{ sar_sis_service_user.split('@')[0] }}") -eq $null){
+          Continue
+      }
+      if(($user | select-string "Disc") -ne $null){
+          $quserData = ($quserData[0..1],"null",$quserData[2..($quserData.Length -1)]) -split "\s+"
+      }
+      $users = $quserData[3]
+    }
+    return $users
+  register: current_session_id
+
+- name        : Start {{ sar_sis_artifact_name }}
+  win_psexec  :
+     chdir      : '{{ sar_sis_installation_folder }}'
+     command    : '{{ sar_sis_installation_folder }}\{{ sar_sis_launch_file }}'
+     interactive: yes
+     wait       : no
+     session    : '{{ current_session_id.stdout | int }}'
+     username   : '{{ windows_domain }}\{{ sar_sis_service_user }}'
+     password   : '{{ sar_sis_service_user_password }}'
+
+
+#- name: Wait for process start up
+#  win_wait_for:
+#      port: "{{ sar_sis_service_port }}"
+#      delay: 10
+#      retries: 30
+#      state: started
+
+- name: Removing PSExec
+  win_file:
+     path: "c:\\windows\\System32\\PsExec.exe"
+     state: absent

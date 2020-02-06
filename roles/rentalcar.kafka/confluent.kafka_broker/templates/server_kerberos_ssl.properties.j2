@@ -1,0 +1,40 @@
+# Maintained by Ansible
+listeners=SASL_PLAINTEXT://{{inventory_hostname}}:{{kafka_port}},PLAINTEXT://{{inventory_hostname}}:9091
+listener.security.protocol.map=SASL_PLAINTEXT:SASL_SSL,PLAINTEXT:PLAINTEXT
+advertised.listeners=SASL_SSL://{{inventory_hostname}}:{{kafka_port}},PLAINTEXT://{{inventory_hostname}}:9091
+
+zookeeper.set.acl=false
+{% include './includes/base_server.properties.j2' %}
+
+# Kerberos / GSSAPI Authentication mechanism
+sasl.enabled.mechanisms=GSSAPI
+sasl.mechanism.inter.broker.protocol=GSSAPI
+
+security.inter.broker.protocol=SASL_PLAINTEXT
+sasl.kerberos.service.name=kafka
+
+# SSL Additions
+ssl.client.auth=required
+ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+ssl.truststore.password={{ kerberos.storepass_secret }}
+ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+ssl.keystore.password={{ kerberos.keypass_secret }}
+ssl.key.password={{ host_keystore_storepass }}
+
+# confluent.metrics.reporter.ssl.truststore.location={{ kerberos.jks_store_folder }}/kafka.client.truststore.jks
+# confluent.metrics.reporter.ssl.truststore.password={{ kerberos.storepass_secret }}
+# confluent.metrics.reporter.ssl.keystore.location={{ kerberos.jks_store_folder }}/kafka.client.keystore.jks
+# confluent.metrics.reporter.ssl.keystore.password={{ kerberos.keypass_secret }}
+# confluent.metrics.reporter.ssl.key.password={{ host_keystore_storepass }}
+
+
+# Confluent Support
+{% include './includes/confluent_support.j2' %}
+# confluent.metrics.reporter.sasl.mechanism=GSSAPI
+# confluent.metrics.reporter.security.protocol=SASL_SSL
+# confluent.metrics.reporter.sasl.kerberos.service.name=kafka
+# confluent.metrics.reporter.sasl.jaas.config=com.sun.security.auth.module.Krb5LoginModule required \
+#    useKeyTab=true \
+#    storeKey=true \
+#    keyTab="{{kerberos.keytab_dir}}/client-{{inventory_hostname}}.keytab" \
+#    principal="client/{{inventory_hostname}}@{{kerberos.realm|upper()}}";

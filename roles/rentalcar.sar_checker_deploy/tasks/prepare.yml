@@ -1,0 +1,4 @@
+---
+
+- name: Ensure CHECKER app is stopped
+  script: files/scripts/stop_checker.ps1

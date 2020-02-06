@@ -1,0 +1,5 @@
+---
+
+- name: Ensure TAR app is stopped
+  script: files/scripts/stop_TAR.ps1
+

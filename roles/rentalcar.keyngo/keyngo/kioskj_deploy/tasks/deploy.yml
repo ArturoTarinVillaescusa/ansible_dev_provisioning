@@ -1,0 +1,65 @@
+## Deploy
+## Creates the service if not exists, stops it, backups the current version, deploy the new one and starts the service again
+
+- name  : '### DEPLOY ### '
+  block :
+  - name        : '>>>> DEPLOY NEW VERSION'
+    debug       :
+       msg            : 'Deploying  {{ inventory_hostname }} version {{ keyngo_kioskj_version }} in {{ ansible_hostname }}'
+  
+  - name      : Setting {{ inventory_hostname }} OUT
+    set_fact  :
+        keyngo_kioskj_nginx_conf_kioskj_out: 
+        - "{{ inventory_hostname }}"
+        
+  - name      : Reloading nginx
+    import_tasks: management/reload_nginx.yml
+
+  - name        : 'Ensure service {{ keyngo_kioskj_version }} installed and stopped in {{ ansible_hostname }} '
+    import_tasks: management/service_stopped.yml
+
+  - name        : 'Backup current running version of {{ keyngo_kioskj_svc_name }} in {{ ansible_hostname }}'
+    block       :
+    - name        : 'Ensure backup folder is present' 
+      win_file    : 
+        path          : '{{ keyngo_kioskj_base_path }}\backup\form_version_{{ keyngo_kioskj_version }}'
+        state         : directory
+    - name        : 'Check if a previous backup exists'
+      win_stat    :
+         path         : '{{ keyngo_kioskj_base_path }}\backup\form_version_{{ keyngo_kioskj_version }}\backup_done.txt'
+      register        : backup_present
+    - name        : 'Backup current running version of {{ keyngo_kioskj_svc_name }} in {{ ansible_hostname }}'
+      block       :
+      - name        : 'Copy current deployed version to backup folder'
+        win_copy    :
+           remote_src   : yes
+           src          : '{{ keyngo_kioskj_base_path }}\app\bin'
+           dest         : '{{ keyngo_kioskj_base_path }}\backup\form_version_{{ keyngo_kioskj_version }}\'
+
+      - name        : 'Set backup performed flag in backup directory'
+        win_file    :
+           path         : '{{ keyngo_kioskj_base_path }}\backup\form_version_{{ keyngo_kioskj_version }}\backup_done.txt'
+           state        : touch
+      when       : backup_present['stat']['exists'] == false
+
+  - name      : 'Install {{ keyngo_kioskj_version }} version of {{ keyngo_kioskj_svc_name }} in {{ ansible_hostname }}'
+    block     :
+    - name        : 'Clean current prod folder'
+      win_file    :
+        path          : '{{ keyngo_kioskj_base_path }}\app\bin'
+        state         : absent
+    - name        : 'Move files'
+      win_copy    :
+         remote_src   : yes
+         src          : '{{ keyngo_kioskj_artifact_path }}\delivery\'
+         dest         : '{{ keyngo_kioskj_base_path }}\app\bin\'
+
+  - name        : 'Ensure service is started'
+    import_tasks     : management/service_started.yml
+
+  - name      : Setting {{ inventory_hostname }} IN
+    set_fact  :
+        keyngo_kioskj_nginx_conf_kioskj_out: []
+  - name      : Reloading nginx
+    import_tasks: management/reload_nginx.yml     
+    

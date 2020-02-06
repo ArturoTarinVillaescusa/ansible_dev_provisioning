@@ -1,0 +1,16 @@
+---
+
+- name: Ensure artifacts folder exist
+  win_file:
+    path: "{{ sar_cdv_installation_folder }}"
+    state: directory
+
+- name: Distribute {{ sar_cdv_artifact_name }}{{ sar_cdv_version }} to {{ sar_cdv_installation_folder }}
+  win_get_url:
+    url: "{{ sar_cdv_nexus_url }}{{ sar_cdv_artifact_name }}-{{ sar_cdv_version }}.7z"
+    dest: "{{ sar_cdv_installation_folder }}"
+
+- name: Transfer PSExec
+  win_get_url:
+    url: "{{ nexus_url }}/repository/tools/PsExec.exe"
+    dest: "c:\\windows\\System32"

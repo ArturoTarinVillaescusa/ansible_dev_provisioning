@@ -1,0 +1,8 @@
+
+- hosts         : keyngo_kioskj
+  gather_facts  : yes
+  serial        : 1
+  roles:
+     - role: rentalcar.keyngo/keyngo/kioskj_deploy
+       vars:
+          keyngo_kioskj_op: '{{ keyngo_kioskj_op }}'

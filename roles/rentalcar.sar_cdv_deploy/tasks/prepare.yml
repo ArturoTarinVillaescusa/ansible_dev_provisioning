@@ -1,0 +1,5 @@
+---
+
+- name: Ensure CDV app is stopped
+  script: files/scripts/stop_CDV.ps1
+

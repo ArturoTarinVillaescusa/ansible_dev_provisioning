@@ -1,0 +1,28 @@
+## Distribute
+## Ensure the target version artifacts are present.
+
+- name  : '### DISTRIBUTE ### '
+  block :
+  - name        : '>>>> DISTRIBUTE DELIVERY'
+    debug       :
+       msg        : 'Ensuring required delivery is present for {{ inventory_hostname }} in {{ ansible_hostname }}'
+  - name        : 'Distribute version if required'
+    block       :
+    - name        : 'Ensure APP Artifact is present'
+      win_stat    :
+         path     : '{{ mssown_mss_artifact_path }}\{{ mssown_mss_artifact_name }}'
+      register    : mssown_mss_artifact
+    
+    - name        : 'Download App artifact if required'
+      block       :
+      - name        : 'Ensure New version path is present'
+        win_file    :
+           path             : '{{ mssown_mss_artifact_path }}'
+           state            : directory
+      - name        : 'Download Artifact'
+        win_get_url :
+           url              : '{{ mssown_mss_artifact_url }}'
+           dest             : '{{ mssown_mss_artifact_path }}\{{ mssown_mss_artifact_name }}'
+      when        : mssown_mss_artifact['stat']['exists'] == false
+    when       : mssown_mss_version is defined
+

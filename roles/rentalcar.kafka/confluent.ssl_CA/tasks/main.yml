@@ -1,0 +1,16 @@
+- name: create ssl certificate directory
+  file:
+    path: "{{ kerberos.jks_store_folder }}"
+    state: directory
+    mode: 0755
+- name: create ssl certs
+  script: scripts/certs-create.sh
+  args:
+    chdir: "{{ kerberos.jks_store_folder }}"
+    creates: "{{ kerberos.jks_store_folder }}/broker.keystore.jks"
+- name: copy ssl related files to local ansible host ({{ kerberos.jks_store_folder }}/ to generated_ssl_files)
+  synchronize:
+    src: "{{ kerberos.jks_store_folder }}/"
+    dest: generated_ssl_files
+    mode: pull
+  ignore_errors: yes

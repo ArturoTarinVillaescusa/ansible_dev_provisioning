@@ -1,0 +1,16 @@
+---
+
+- name: Ensure artifacts folder exist
+  win_file:
+    path: "{{ sar_sis_installation_folder }}"
+    state: directory
+
+- name: Distribute {{ sar_sis_artifact_name }}{{ sar_sis_version }} to {{ sar_sis_installation_folder }}
+  win_get_url:
+    url: "{{ sar_sis_nexus_url }}{{ sar_sis_artifact_name }}-{{ sar_sis_version }}.7z"
+    dest: "{{ sar_sis_installation_folder }}"
+
+- name: Transfer PSExec
+  win_get_url:
+    url: "{{ nexus_url }}/repository/tools/PsExec.exe"
+    dest: "c:\\windows\\System32"

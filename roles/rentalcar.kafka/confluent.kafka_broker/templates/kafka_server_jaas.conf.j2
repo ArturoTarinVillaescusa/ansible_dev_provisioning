@@ -1,0 +1,34 @@
+// Kafka broker <-> Kafka broker authentication
+KafkaServer {
+    com.sun.security.auth.module.Krb5LoginModule required
+    useKeyTab=true
+    storeKey=true
+    useTicketCache=false
+    keyTab="{{kerberos.keytab_dir}}/kafka.service.keytab"
+    principal="kafka/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+
+// Confluent Community specific configuration for authentication with SASL
+//   org.apache.kafka.common.security.plain.PlainLoginModule required
+//   username="admin"
+//   password="admin-secret"
+//   user_admin="admin-secret"
+//   user_alice="alice-secret";
+};
+
+// Kafka broker -> ZooKeeper client authentication
+Client {
+    com.sun.security.auth.module.Krb5LoginModule required
+    useKeyTab=true
+    storeKey=true
+		useTicketCache=false
+    keyTab="{{kerberos.keytab_dir}}/zookeeper.service.keytab"
+    principal="zookeeper/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+};
+
+KafkaClient {
+    com.sun.security.auth.module.Krb5LoginModule required
+    useKeyTab=true
+    storeKey=true
+    keyTab="{{kerberos.keytab_dir}}/kafka.service.keytab"
+    principal="admin/{{inventory_hostname}}@{{kerberos.realm|upper()}}";
+};

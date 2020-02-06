@@ -1,0 +1,6 @@
+- hosts: "{{ kioskm_devices }}"
+  gather_facts: no
+  roles:
+     - role: keyngo_kioskm
+       vars:
+          kioskm_op: 'setup'

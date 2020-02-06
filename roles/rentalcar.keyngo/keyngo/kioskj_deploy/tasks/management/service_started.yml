@@ -1,0 +1,11 @@
+- name         : Install service if required
+  import_tasks : management/service_installed.yml
+- name         : Ensure service {{ keyngo_kioskj_svc_name }} service is started in {{ ansible_hostname }}
+  win_service  :
+     name         : '{{ keyngo_kioskj_svc_name }}'
+     state        : started
+     display_name : '{{ keyngo_kioskj_svc_name }}'
+     description  : '{{ keyngo_kioskj_svc_name }}-{{ keyngo_kioskj_version }}'
+     start_mode   : auto           
+     username     : '{{ keyngo_kioskj_svc_user }}'
+     password     : '{{ keyngo_kioskj_svc_password }}'        

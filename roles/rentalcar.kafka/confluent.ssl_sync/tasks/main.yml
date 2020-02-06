@@ -1,0 +1,11 @@
+- name: create ssl certificate directory
+  file:
+    path: "{{ kerberos.jks_store_folder }}"
+    state: directory
+    mode: 0755
+
+- name: copy ssl related files to host
+  synchronize:
+    src: generated_ssl_files/
+    dest: "{{ kerberos.jks_store_folder }}"
+  ignore_errors: yes

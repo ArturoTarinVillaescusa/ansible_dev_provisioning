@@ -1,0 +1,48 @@
+---
+- name        : Setup target System
+  import_tasks: setup.yml
+  when: kioskm_op == 'setup' or
+        kioskm_op == 'distribute' or
+        kioskm_op == 'prepare' or
+        kioskm_op == 'deploy'
+        
+- name        : Distribute required software
+  import_tasks: distribute.yml
+  when: kioskm_op == 'distribute' or
+        kioskm_op == 'prepare' or
+        kioskm_op == 'deploy'
+
+- name        : Ensure prerequisites are present
+  import_tasks: prepare.yml
+  when: kioskm_op == 'prepare' or
+        kioskm_op == 'deploy'
+  
+- name        : Deploy target versions
+  block       :
+     - import_tasks: app_stop.yml
+     - import_tasks: deploy.yml
+     - import_tasks: app_start.yml
+  when: kioskm_op == 'deploy'
+
+- name        : Restart application if required
+  block       :
+     - name        : Stop app
+       import_tasks: app_stop.yml
+     - name        : Start app
+       import_tasks: app_start.yml
+  when: 
+     - kioskm_restart is defined 
+     - kioskm_restart == 'yes'
+     - kioskm_op != 'deploy'
+
+- name        : Reboot system if required
+  win_reboot  :
+  when: 
+     - kioskm_reboot is defined
+     - kioskm_reboot == 'yes'
+
+- name        : Check if app is running
+  import_tasks: app_check.yml
+  when: kioskm_op == 'check'
+
+

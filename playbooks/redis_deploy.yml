@@ -1,0 +1,11 @@
+---
+- hosts: "{{ hosts }}"
+  become: true
+  tasks:
+    - name: Installing repo for last Redis version for Ubuntu
+      apt_repository: repo='ppa:chris-lea/redis-server'
+
+- hosts: "{{ hosts }}"
+  become: true
+  roles:
+    - role: geerlingguy.redis

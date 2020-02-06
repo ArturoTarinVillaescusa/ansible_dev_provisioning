@@ -1,0 +1,94 @@
+## COMMON COMPONENT VARS
+# APP       : KEYNGO
+# COMPONENT : kioskj
+# PREFIX    : keyngo_kioskj
+
+## SYSTEM
+keyngo_kioskj_os             : windows
+keyngo_kioskj_name           : KioskJ
+keyngo_kioskj_base_path      : '{{ keyngo_base_path }}\{{ keyngo_kioskj_name }}\{{ inventory_hostname }}'
+keyngo_kioskj_required_paths :
+- '{{ keyngo_kioskj_base_path }}\backup'
+- '{{ keyngo_kioskj_base_path }}\app\logs'
+- '{{ keyngo_kioskj_base_path }}\app\bin'
+
+## SERVICE
+
+keyngo_kioskj_svc_name       : '{{ inventory_hostname }}'
+keyngo_kioskj_svc_user       : LABCEN\administrador
+keyngo_kioskj_svc_password   : '{{ vault_keyngo_kioskj_svc_password }}'
+keyngo_kioskj_svc_launcher   : '{{ keyngo_kioskj_base_path }}\app\bin\launcher.bat'
+
+## INSTANCE VARS
+
+keyngo_kioskj_instance_vars:
+  keyngo_kioskj_1           :         
+    listen_port               : 19001
+    kioskd_port               : 28651       
+  keyngo_kioskj_2           :         
+    listen_port               : 19002
+    kioskd_port               : 28651
+  keyngo_kioskj_3           :         
+    listen_port               : 19003
+    kioskd_port               : 28651
+
+## ROLLING UPDATE VARS
+keyngo_kioskj_nginx_conf_kioskj_out: []
+
+
+## SERVICE_PARAMS
+
+keyngo_kioskj_svc_param_name   : '{{ inventory_hostname }}'
+keyngo_kioskj_svc_param_id     : 1
+keyngo_kioskj_svc_param_port   : "{{ keyngo_kioskj_instance_vars[inventory_hostname]['listen_port'] }}"
+keyngo_kioskj_svc_param_server : '{{ ansible_hostname }}'
+keyngo_kioskj_svc_param_5      : '""'
+
+## DEPLOYMENT
+keyngo_kioskj_artifact_name  : '{{ keyngo_kioskj_name }}-{{ keyngo_kioskj_version }}.zip'
+keyngo_kioskj_artifact_jar   : '{{ keyngo_kioskj_name }}-{{ keyngo_kioskj_version }}.jar'
+keyngo_kioskj_artifact_url   : '{{ nexus_url }}/repository/Kiosk/{{ keyngo_kioskj_artifact_name }}'
+keyngo_kioskj_artifact_path  : '{{ keyngo_kioskj_base_path }}\deliveries\{{ keyngo_kioskj_version }}'
+
+## DATABASE 
+## prefix   : keyngo_kioskj_db
+keyngo_kioskj_db_host            : LOCALHOST
+keyngo_kioskj_db_name            : BDSIGGER
+keyngo_kioskj_db_user            : TESTUSER
+keyngo_kioskj_db_jasypt_password : OWx5ixhkAM+E7oa9U8PuRA==
+
+## CONFIGURATION
+
+## application_properties
+## prefix   : keyngo_kioskj_app
+
+# Kiosk Properties all
+# ===============================
+keyngo_kioskj_app_tiempo_reserva_anterior_en_minutos  : 60
+keyngo_kioskj_app_tiempo_reserva_posterior_en_minutos : 360
+keyngo_kioskj_app_hora_inicio_reservas                : '07:00:00'
+keyngo_kioskj_app_hora_fin_reservas                   : '23:00:00'
+keyngo_kioskj_app_kioskd_url                          : http://localhost:28651
+keyngo_kioskj_app_id_validation_url                   : http://localhost:11010
+keyngo_kioskj_app_http_client_read_timeout            : 120000
+
+
+# Graphite Metrics
+# ===============================
+keyngo_kioskj_app_metrics_graphite_enabled            : false
+keyngo_kioskj_app_metrics_graphite_hostname           : localhost
+keyngo_kioskj_app_metrics_graphite_port               : 2023
+keyngo_kioskj_app_metrics_graphite_prefix             : rentalcar.keyandgo
+keyngo_kioskj_app_metrics_graphite_time_between_polls : 10
+keyngo_kioskj_app_metrics_graphite_microservice_name  : KioskJ
+
+
+# Authorization
+# ===============================
+keyngo_kioskj_app_authorization_client_secret                     : '$2a$10$mNOueYUx0CyXlQpEeW6O5.D3xj1BTjGdKleneIbMMwIvGU4U1Ny96'
+keyngo_kioskj_app_authorization_clientId                          : kioskM
+keyngo_kioskj_app_authorization_token_validity_seconds            : 3600
+keyngo_kioskj_app_rentalcar_security_enabled                        : false
+keyngo_kioskj_app_broker_codes_without_preauthorizacion_required  : 50001
+keyngo_kioskj_app_fuel_deposit_preauthorization_enabled           : true
+

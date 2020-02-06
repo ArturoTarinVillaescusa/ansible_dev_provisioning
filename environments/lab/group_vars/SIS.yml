@@ -1,0 +1,13 @@
+---
+
+sar_sis_db_reference:
+   LABSYSDEV02: "BETASERVER"
+
+sar_cdv_db_reference:
+   LABSYSDEV02: "BETASERVER"
+
+sar_tar_db_reference:
+   LABSYSDEV02: "BETASERVER"
+
+sar_checker_zone_ref:
+   LABSYSDEV02: "ALC"        

@@ -1,0 +1,22 @@
+# Set this property to one of the following values: test, production
+spring.profiles.active=test
+spring.servlet.multipart.max-file-size= {{ mss_maxfile }}
+
+rentalcar.tasks.endPoints=,/Commands,/Monitors,/Manager,/Manager,/Manager
+rentalcar.tasks.nameMethods=UrlBase,Commands,Monitors,DocumentManagerAddTask,DocumentManagerUpdateTask,DocumentManagerGetTask
+rentalcar.uris.endPoints=/DocumentManagerResource
+rentalcar.uris.nameMethods=DocumentManagerResource
+rentalcar.errors.codes=
+rentalcar.errors.descriptions=
+rentalcar.daemon = 1
+rentalcar.daemon.version=1.0.0
+
+# Encryption password, must be set as system environment variable.
+# If no env variable defined, use default (testing purposes)
+jasypt.encryptor.password=${JASYPT_MASTER_PASS:123456}
+
+rentalcar.documentManager.aws.endPoint= {{ mss_aws_endpoint }}
+rentalcar.documentManager.aws.accessKey= {{ mss_aws_accesskey }}
+rentalcar.documentManager.aws.secretKey= {{ mss_aws_accesskey }}
+rentalcar.documentManager.aws.bucketName= {{ mss_aws_bucket }}
+

@@ -1,0 +1,9 @@
+---
+- name: Setup base
+  import_tasks: setup.yml
+
+- name: Distribute software
+  import_tasks: distribute.yml
+
+- name: Deploy mss
+  import_tasks: deploy.yml

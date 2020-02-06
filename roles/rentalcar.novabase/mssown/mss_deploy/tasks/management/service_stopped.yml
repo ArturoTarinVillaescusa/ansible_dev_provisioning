@@ -1,0 +1,12 @@
+- name        : Check if {{ mssown_mss_svc_name }} service exists in {{ ansible_hostname }}
+  win_service :
+     name         : '{{ mssown_mss_svc_name }}'
+  register: service_info
+
+- name         : Ensure service {{ mssown_mss_svc_name }} service is stopped in {{ ansible_hostname }}
+  win_service  :
+     name         : '{{ mssown_mss_svc_name }}'
+     state        : stopped
+     username     : '{{ mssown_mss_svc_user }}'
+     password     : '{{ mssown_mss_svc_password }}'  
+  when         : service_info['exists'] == true
